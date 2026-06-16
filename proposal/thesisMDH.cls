@@ -33,6 +33,7 @@
 \RequirePackage{caption}
 \RequirePackage{float}
 \RequirePackage{xcolor}
+\RequirePackage{multicol}
 
 
 % Swedish language package 
@@ -66,6 +67,15 @@
 
 \NewDocumentCommand{\authorFour}{m m}{
 \newcommand{\authorFourName}{\Large{#1} \\ \parindent0pt\small{#2}}}
+
+\NewDocumentCommand{\authorFive}{m m}{
+\newcommand{\authorFiveName}{\Large{#1} \\ \parindent0pt\small{#2}}} % Added due to the large group
+
+\NewDocumentCommand{\authorSix}{m m}{
+\newcommand{\authorSixName}{\Large{#1} \\ \parindent0pt\small{#2}}} % Added due to the large group
+
+\NewDocumentCommand{\authorSeven}{m m}{
+\newcommand{\authorSevenName}{\Large{#1} \\ \parindent0pt\small{#2}}} % Added due to the large group
 
 
 \NewDocumentCommand{\subject}{m}{\newcommand{\subjectName}{\Large{#1}}}
@@ -123,17 +133,27 @@
             \vspace{10mm}
             
     		\ifdef{\theTitleName}{\theTitleName}{\warning{Missing title}} \\
-    		\vspace{25mm}
-    		
-    		\ifdef{\authorOneName}{\authorOneName \\ \vspace{5mm}}{\warning{Missing authorOne}} 
-    		
-    		\ifdef{\authorTwoName}{\authorTwoName \\ \vspace{5mm}}{}
-    		
-    		\ifdef{\authorThreeName}{\authorThreeName \\ \vspace{5mm}}{}
-    		
-    		\ifdef{\authorFourName}{\authorFourName \\}{}
+    		\vspace{15mm} % changed due to the large group
+    		\end{center} % Added due to the large group
+        \begin{multicols}{2} % Added due to the large group
+          \ifdef{\authorOneName}{\authorOneName \\ \vspace{5mm}}{\warning{Missing authorOne}} 
+          
+          \ifdef{\authorTwoName}{\authorTwoName \\ \vspace{5mm}}{}
+          
+          \ifdef{\authorThreeName}{\authorThreeName \\ \vspace{5mm}}{}
+          
+          \ifdef{\authorFourName}{\authorFourName \\ \vspace{5mm}}{} % changed due to the large group
 
-            \vspace{15mm}
+          \columnbreak
+          
+          \ifdef{\authorFiveName}{\authorFiveName \\ \vspace{5mm}}{} % Added due to the large group
+
+          \ifdef{\authorSixName}{\authorSixName \\ \vspace{5mm}}{} % Added due to the large group
+          
+          \ifdef{\authorSevenName}{\authorSevenName \\}{} % Added due to the large group
+        \end{multicols} % Added due to the large group
+        \begin{center} % Added due to the large group
+            \vspace{10mm} % changed due to the large group
             \begin{flushleft}
             
                 \ifdef{\examName}{\examName \\ \vspace{5mm}}{}
