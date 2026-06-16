@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber main"] 0 "main.bcf" "main.bbl" "main" 1781600172.88621 -1
-  "main.bcf" 1781600172.8165 107873 b5fc57a4fb22aea1eb9d9bc4b7c1d384 "pdflatex"
+["biber main"] 0 "main.bcf" "main.bbl" "main" 0 -1
+  "main.bcf" 1781604766.36923 107873 b5fc57a4fb22aea1eb9d9bc4b7c1d384 "pdflatex"
   "references.bib" 1781541304.06998 3184 ea4f5cdcadfcc44cf7ac5087248eb3a3 ""
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1781600172.12545 "/home/cornelia/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781600172.88648 2
+["pdflatex"] 1781604765.5844 "/home/cornelia/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781604766.46845 2
   "/home/cornelia/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" 1781600133.10723 1406 abf83b8f2aeb16d6047bb2d43f26bf21 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1775415801 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1775415801 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -172,10 +172,10 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1781552683 5385779 47c0c393a77fd4a098bacfd57d66b88a ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781552627 2328189 bda4711c2ef90b5ceabb63b03663516a ""
   "images/MDHlogga.eps" 1781541300.59725 1821602 cc66ef986ed15077c6fe0fa475259fc9 ""
-  "main.aux" 1781600172.8125 505 2eef81684ceed2ddcba1434a7ce82c51 "pdflatex"
+  "main.aux" 1781604766.36623 621 4695578cbbcbf23d1ec76a2bf8449f90 "pdflatex"
   "main.bbl" 0 -1 0 "biber main"
   "main.tex" 1781600133.10723 1406 abf83b8f2aeb16d6047bb2d43f26bf21 ""
-  "sections/proposal.tex" 1781599971.3586 1859 3e43ba58d469bcb6011ad64b36dd635e ""
+  "sections/proposal.tex" 1781604764.55838 1943 6a62afdc82a668f272c3694e5ea43f44 ""
   "thesisMDH.cls" 1781541307.50542 6654 915a2783ea07347def37cf71b9a6edee ""
   (generated)
   "main.aux"
