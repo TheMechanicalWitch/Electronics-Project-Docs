@@ -1,11 +1,11 @@
 # Fdb version 4
-["biber main"] 1781687906.25851 "main.bcf" "main.bbl" "main" 1781688941.09733 0
-  "main.bcf" 1781688940 107802 cee5caddedd9b35d221cb862868521a1 "pdflatex"
+["biber main"] 1781687906.25851 "main.bcf" "main.bbl" "main" 1781689163.35466 0
+  "main.bcf" 1781689163 107802 cee5caddedd9b35d221cb862868521a1 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1781688939.64257 "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781688941.09795 0
+["pdflatex"] 1781689161.87956 "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781689163.35526 0
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1781687726 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi0700.pk" 1781687732 22204 197328e29dd1465a56921ea26ac3a4d2 ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1200.pk" 1781687735 42728 bdea8b34307ed961244bee855b5013db ""
@@ -176,11 +176,11 @@
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/tex/latex/xpatch/xpatch.sty" 1585221260 8510 7803f78066c4f9d008405191a4b43073 ""
   "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" 1781687062 1718 5f8c134451de151c118d1afb41bc4e10 ""
   "images/MDHlogga.eps" 1781685730 1821602 1e54077922e16f4bb5095facad785eed ""
-  "main.aux" 1781688940 817 122a4ccdc1ccd4a35a35363a208f7278 "pdflatex"
+  "main.aux" 1781689163 817 122a4ccdc1ccd4a35a35363a208f7278 "pdflatex"
   "main.bbl" 1781687908 486 76d65a242ec496c9b4361af646ff12cb "biber main"
-  "main.run.xml" 1781688940 2464 049e271447fc99698a483580e7e315d4 "pdflatex"
+  "main.run.xml" 1781689163 2464 049e271447fc99698a483580e7e315d4 "pdflatex"
   "main.tex" 1781687062 1718 5f8c134451de151c118d1afb41bc4e10 ""
-  "sections/proposal.tex" 1781688937 2840 30f34ac17553cee0f164eee81c6c58fb ""
+  "sections/proposal.tex" 1781689161 2764 4b529883abdbf771ee0491aedf621d99 ""
   "thesisMDH.cls" 1781687062 8024 d8e0062a306031daae06f890dde2ee31 ""
   (generated)
   "main.aux"
