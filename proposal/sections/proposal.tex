@@ -2,12 +2,12 @@
 %%\alert{[Describe the context of the proposed work. Make it clear how and why, in this context, the problem that you are going to address in your thesis is important]} \cite{Berndtsson607210}
 
 
-\section*{Problem formulation:}
-\alert{[Provide a brief description of what problem you are going to investigate in your thesis work. Provide 2 to 4 clear and concrete problems that will be the core of the thesis work.]}
+%\section*{Problem formulation:}
+%\alert{[Provide a brief description of what problem you are going to investigate in your thesis work. Provide 2 to 4 clear and concrete problems that will be the core of the thesis work.]}
 
 
-\section*{Method:}
-\alert{[Describe in detail the steps you will take in attempting to answer your research question or whether you will follow a known scientific or engineering method]}
+\section*{Requirements:}
+%\alert{[Describe in detail the steps you will take in attempting to answer your research question or whether you will follow a known scientific or engineering method]}
 
 \textbf{The following requirements are copied verbatim:}
 \begin{itemize}
@@ -30,38 +30,76 @@ En utvärdering ska genomföras av möjligheten att implementera ROS2 i systemet
 Gruppkontrakt ska vara etablerat och en tydlig ansvarsfördelning inom gruppen ska vara definierad och dokumenterad.
 \end{itemize}
 
-\section*{Outcomes:}
-\subsection*{Division}
-The project is divided in optional and mandatory deliverables. 
-\subsubsection*{Mandatory deliverables}
+\section*{Division} % Sorry Kopkin, jag ändrar formuleringen nu när vi har listan från Martin <3
+
+These requirements can be divided into four areas of work.
+
+\textit{Italisised items are optional work areas to be done if times allows}
+
+\subsection*{Organisational}
 \begin{itemize}
-  \item Create validate and capsuled 8 IMU PCBS
-  \item  Create a very specific step by step manual for the wegstr 
+  \item Composing group contract
+  \item Writing manuals for the PCB Mill
+  \item Evaluating and prioritisation of the issues in the LIMB github
+  \item \textit{Writing manuals for the 3d printer \& laser cutter}
 \end{itemize}
-\subsubsection*{Optional deliverables}
+
+\subsection*{Electrical}\nopagebreak
 \begin{itemize}
-  \item Create inverse kinematics for the limb arm movement
-  \item Create new parts for the arm made of carbon fiber to solve issues with movement. 
-  \item re design xxx to make sure parts inside fit correctly
-  \item create and by step guide on how to use the 3d printer bambulabs and the laser cutter.
-  \item Solve a proper stand that is able to integrate the power supply and cover remaining cables sticking out. 
+  \item Manufacturing of 8 PCBs 
+  \item Soldering \& validation of components
+  \item Capsuling of the sensor modules
+  \item Ensuring CAN-integration in serial mode for the IMU 
 \end{itemize}
-\textbf{note: manulas have to be on a extremely basic level where if it is followed anyone should be able to use the machines without a single issue.}
+
+\subsection*{Mechanical}\nopagebreak
+\begin{itemize}
+  \item Evaluating the need for material replacements on certain parts for structural integrity and reliabability
+  \item \textit{Redesigning the outer bicep to fit internal component}
+  \item \textit{Upgrading the fastening module and integrating the powersupply}
+\end{itemize}
+
+\subsection*{Software}\nopagebreak
+\begin{itemize}
+  \item Understanding manual computer control of the limb
+  \item Establishing bluetooth communication between the IMU modules and the LIMB arm
+  \item Connecting the vision system to facilitate the idenification of a coffe mug and human arm. Including a working test.
+  \item Evaluate the posibility to implement ROS2 for spacial awareness and movement
+  \item \textit{Evaluate the use of Inverse kinematics to move all joints}
+\end{itemize}
+
+%\section*{Outcomes:}
+%\subsection*{Division}
+%The project is divided in optional and mandatory deliverables. 
+%\subsubsection*{Mandatory deliverables}
+%\begin{itemize}
+%  \item Create validate and capsuled 8 IMU PCBS
+%  \item  Create a very specific step by step manual for the wegstr 
+%\end{itemize}
+%\subsubsection*{Optional deliverables}
+%\begin{itemize}
+%  \item Create inverse kinematics for the limb arm movement
+%  \item Create new parts for the arm made of carbon fiber to solve issues with movement. 
+%  \item re design xxx to make sure parts inside fit correctly
+%  \item create and by step guide on how to use the 3d printer bambulabs and the laser cutter.
+%  \item Solve a proper stand that is able to integrate the power supply and cover remaining cables sticking out. 
+%\end{itemize}
+\textbf{note:} manulas have to be on a extremely basic level where if it is followed anyone should be able to use the machines without a single issue.
 \\
-\textbf{note: One of the components does not fit without cracking the arm this is the part that needs to be re designed.}
+\textbf{note:} One of the components does not fit without cracking the arm this is the part that needs to be re designed.
 \\
-\textbf{note:the Stand has to be made with consideriation of the arm movement at the moment the stand is in the way and the arm cannot move all the way to 0 degrees and is right now sticking out at a small angle}
+\textbf{note:}the Stand has to be made with consideriation of the arm movement at the moment the stand is in the way and the arm cannot move all the way to 0 degrees and is right now sticking out at a small angle
 
-\alert{[Expand on the problem formulation by describing what you hope to accomplish during the thesis work, and the desired outcomes (especially the practical or theoretical benefits to be gained from the work)]}
-In the end we want 8 complete validated and capsuled IMU devices. Each and every member should understand how the modules work and be able to test them with the LIMB robot and be able to control the limb robot without the modules.
-\section*{Initial time plan:}
-\alert{[Describe the activities that must be performed during the work, in which order and how long to you plan to have them. It is not enough to copy-paste the important dates for the course.]}
-
-\section*{Limitations:}
-\alert{[Describe conditions beyond your control that place restrictions on what you can do and the conclusions you may be able to draw. Also, if the problem is really broad, describe the boundaries that you will focus on]}
-
-\section*{For thesis with confidential data, how will this be addressed:}
-\alert{[Describe how this issue will be dealt with. If the thesis work is done with a company, this issue must have been discussed and the proposed solution must have been agreed by the company before submitting the proposal.]} 
+%\alert{[Expand on the problem formulation by describing what you hope to accomplish during the thesis work, and the desired outcomes (especially the practical or theoretical benefits to be gained from the work)]}
+%In the end we want 8 complete validated and capsuled IMU devices. Each and every member should understand how the modules work and be able to test them with the LIMB robot and be able to control the limb robot without the modules.
+%\section*{Initial time plan:}
+%\alert{[Describe the activities that must be performed during the work, in which order and how long to you plan to have them. It is not enough to copy-paste the important dates for the course.]}
+%
+%\section*{Limitations:}
+%\alert{[Describe conditions beyond your control that place restrictions on what you can do and the conclusions you may be able to draw. Also, if the problem is really broad, describe the boundaries that you will focus on]}
+%
+%\section*{For thesis with confidential data, how will this be addressed:}
+%\alert{[Describe how this issue will be dealt with. If the thesis work is done with a company, this issue must have been discussed and the proposed solution must have been agreed by the company before submitting the proposal.]} 
 \vspace{1cm}
 
 \warning{[REMOVE ALL THE INSTRUCTIONS MARKED WITH RED COLOR BEFORE SUBMITTING YOUR PROPOSAL.]}
