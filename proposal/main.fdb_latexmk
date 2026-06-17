@@ -1,11 +1,11 @@
 # Fdb version 4
-["biber main"] 1781687906.25851 "main.bcf" "main.bbl" "main" 1781689163.35466 0
-  "main.bcf" 1781689163 107802 cee5caddedd9b35d221cb862868521a1 "pdflatex"
+["biber main"] 1781687906.25851 "main.bcf" "main.bbl" "main" 1781689961.26512 0
+  "main.bcf" 1781689961 107802 cee5caddedd9b35d221cb862868521a1 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1781689161.87956 "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781689163.35526 0
+["pdflatex"] 1781689959.8207 "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" "main.pdf" "main" 1781689961.26576 0
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1781687726 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi0700.pk" 1781687732 22204 197328e29dd1465a56921ea26ac3a4d2 ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1200.pk" 1781687735 42728 bdea8b34307ed961244bee855b5013db ""
@@ -19,7 +19,6 @@
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecrm1000.pk" 1781687734 23808 721b9f7ed514a9c50b55a3e6b7b0c524 ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecrm1200.pk" 1781687739 28440 40126dc8232b8c010bd3b41e0b1848cd ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecrm1440.pk" 1781687742 34320 d2f4892af70b790254ed5f30abf98de2 ""
-  "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ectt1000.pk" 1781688866 20028 98eea0b60d16182d9aae26369034d968 ""
   "C:/Users/filip/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1781688867 11548 0e97e0cbca272a1982610f0e4919f7d1 ""
   "C:/Users/filip/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1781687441 13367096 3d3e21a7df32f3c69630a551112320a1 ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ecbi0700.tfm" 993061900 2900 c1a51a11f5fe2fdcb011fae975ee03f1 ""
@@ -39,7 +38,6 @@
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ecti0800.tfm" 993062316 2840 b6fc7cd2d2eed024b253ee3d8fe2d4cb ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ecti1000.tfm" 993062320 2840 5606e1a681c23005308de9d61c09a8ff ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ecti1200.tfm" 993062324 2832 28bbd97ca29f46e76c87a158a9915203 ""
-  "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ectt1000.tfm" 993062340 1348 d70ddf2d5d512b838e50a335e385e919 ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcrm1000.tfm" 993062508 1436 c7f957a372ef2fbe93c0982f96625e12 ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -176,11 +174,11 @@
   "C:/Users/filip/AppData/Local/Programs/MiKTeX/tex/latex/xpatch/xpatch.sty" 1585221260 8510 7803f78066c4f9d008405191a4b43073 ""
   "c:/Users/filip/Documents/GitHub/Electronics-Project-Docs/proposal/main.tex" 1781687062 1718 5f8c134451de151c118d1afb41bc4e10 ""
   "images/MDHlogga.eps" 1781685730 1821602 1e54077922e16f4bb5095facad785eed ""
-  "main.aux" 1781689163 817 122a4ccdc1ccd4a35a35363a208f7278 "pdflatex"
+  "main.aux" 1781689961 817 122a4ccdc1ccd4a35a35363a208f7278 "pdflatex"
   "main.bbl" 1781687908 486 76d65a242ec496c9b4361af646ff12cb "biber main"
-  "main.run.xml" 1781689163 2464 049e271447fc99698a483580e7e315d4 "pdflatex"
+  "main.run.xml" 1781689961 2464 049e271447fc99698a483580e7e315d4 "pdflatex"
   "main.tex" 1781687062 1718 5f8c134451de151c118d1afb41bc4e10 ""
-  "sections/proposal.tex" 1781689161 2764 4b529883abdbf771ee0491aedf621d99 ""
+  "sections/proposal.tex" 1781689959 3406 401670fba08801bfd1ff6b1531930d57 ""
   "thesisMDH.cls" 1781687062 8024 d8e0062a306031daae06f890dde2ee31 ""
   (generated)
   "main.aux"
