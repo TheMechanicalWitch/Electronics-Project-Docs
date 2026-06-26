@@ -12,8 +12,8 @@ def displace_arm():
     w.command_angles(angles)
 
 def shake_arm():
-    for i in range(10):
+    for i in range(5):
         displace_arm()
-        time.sleep(3)
+        time.sleep(1)
 
 w.run_program(shake_arm)
