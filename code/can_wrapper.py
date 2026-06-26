@@ -67,7 +67,6 @@ class CANWrapper:
                 except Exception as e:
                     print(e)
                     pass
-                print(pot_angles)
 
             time.sleep(0.1)
 
@@ -82,18 +81,20 @@ class CANWrapper:
             self.command_angle(self.joint_to_act[joint], angle, speed)
 
         if not wait_until_complete:
+            print('does not check')
             return False
 
-        while time.time() - start_time >= timeout:
-            if angles_are_reached(angle_map, precision):
+        while time.time() - start_time < timeout:
+            if self.angles_are_reached(angle_map, precision):
                 return True
             time.sleep(0.1)
+        print('timeout')
         return False
     #}}}
 
     #{{{angles_are_reached
-    def angles_are_reached(self, angle_map, precision=DEFAULT_PRECISION):
-        return False not in [target_angle + precision > get_angles()[joint] >= target_angle - precision
+    def angles_are_reached(self, angle_map, precision=DEFAULT_PRECISION) -> bool:
+        return False not in [target_angle + precision > self.get_angles()[joint] >= target_angle - precision
                              for joint, target_angle in angle_map.items()]
     #}}}
 
