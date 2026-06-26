@@ -9,11 +9,11 @@ def displace_arm():
     for joint, angle in angles.items():
         angles[joint] = angle + random.choice([10,-10])
 
-    w.command_angles(angles)
+    print(w.command_angles(angles, wait_until_complete=True, timeout=100.0, precision=10.0))
 
 def shake_arm():
     for i in range(5):
         displace_arm()
-        time.sleep(1)
+        print("LOOP")
 
 w.run_program(shake_arm)
