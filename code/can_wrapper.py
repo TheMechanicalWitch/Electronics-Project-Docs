@@ -73,9 +73,21 @@ class CANWrapper:
     #}}}
 
     #{{{command_angles
-    def command_angles(self, angle_map: dict[str, float]) -> None:
+    def command_angles(self, angle_map: dict[str, float], speed=100, wait_until_complete=False, timeout=5.0, precision=5.0) -> bool:
+        start_time = time.time()
+
         for joint, angle in angle_map.items():
-            self.command_angle(self.joint_to_act[joint], angle, 100)
+            self.command_angle(self.joint_to_act[joint], angle, speed)
+
+        if not wait_until_complete:
+            return False
+
+        while time.time() - start_time >= timeout:
+            if False not in [target_angle + precision > get_angles()[joint] >= target_angle - precision
+                             for joint, target_angle in angle_map.items()]:
+                return True
+            time.sleep(0.1)
+        return False
     #}}}
 
     #{{{command_angle
