@@ -8,7 +8,7 @@ from hardware.can.can_message_parser import CANMessageParser
 #}}}
 
 #{{{get_map
-def get_map(self, A: list, B: list) -> dict:
+def get_map(A: list, B: list) -> dict:
     m = {}
     for i, a in enumerate(A):
         try:
@@ -18,7 +18,7 @@ def get_map(self, A: list, B: list) -> dict:
     return m
 #}}}
 
-class Wrapper:
+class CANWrapper:
     #{{{CONSTANTS
     JOINTS = [
         'shoulder_up_down'   ,
@@ -39,7 +39,7 @@ class Wrapper:
     #}}}
 
     #{{{GLOBALS
-    non_source_angles = get_map(NON_SOURCES, [0.0 for n in len(NON_SOURCES)])
+    non_source_angles = get_map(NON_SOURCES, [0.0 for n in range(len(NON_SOURCES))])
     #}}}
 
     joint_to_act = get_map(JOINTS, ACTUATORS)
@@ -49,48 +49,50 @@ class Wrapper:
 
     def __init__(self):
         self.can_message_parser = CANMessageParser()
+        self.can_interface = None
 
     #{{{get_angles
-    def get_angles(self, can_interface: SocketCANInterface) -> dict:
+    def get_angles(self) -> dict:
         pot_angles = {}
-        while not all((pot in pot_angles) for pot in POTENTIOMETERS):
-            messages = can_interface.read(timeout=0.1)
+        while not all((self.pot_to_joint[pot] in pot_angles) for pot in self.POTENTIOMETERS):
+            messages = self.can_interface.read(timeout=0.1)
             for msg in messages:
                 msg_type = getattr(msg, 'message_type', 'unknown')
                 parsed_data = getattr(msg, 'parsed_data', {})
 
                 try:
-                    pot_angles[pot_to_joint(msg_type)] = parsed_data['value']
-                except:
+                    pot_angles[self.pot_to_joint[msg_type]] = parsed_data['value']
+                except Exception as e:
+                    print(e)
                     pass
+                print(pot_angles)
 
             time.sleep(0.1)
 
-        return pot_angles | non_source_angles
+        return pot_angles | self.non_source_angles
     #}}}
 
     #{{{command_angles
-    def command_angles(self, can_interface: SocketCANInterface, angle_map: dict[str, float]) -> None:
+    def command_angles(self, angle_map: dict[str, float]) -> None:
         for joint, angle in angle_map.items():
-            self.command_angle(can_interface, self.joint_to_act[joint], angle, 100)
+            self.command_angle(self.joint_to_act[joint], angle, 100)
     #}}}
 
     #{{{command_angle
-    def command_angle(self, can_interface: SocketCANInterface, actuator: str, angle, velocity) -> None:
+    def command_angle(self, actuator: str, angle, velocity) -> None:
         can_id, data = self.can_message_parser.encode(actuator, {"angle": float(angle), "velocity": float(velocity)})
         self.can_interface.send(can_id, data)
-        if self.act_to_joint(actuator) in NON_SOURCES:
+        if self.act_to_joint[actuator] in self.NON_SOURCES:
             self.non_source_angles[self.act_to_joint[actuator]] = angle #TODO: ADD CONFIRMATION CHECK FROM NODES
     #}}}
 
     #{{{run_program
-    def run_program(self, program: function) -> None:
-        can_interface = SocketCANInterface(interface="can0", bitrate=1000000)
-        can_interface.start()
-        #TODO: ADD RESET OF NON_SOURCE JOINTS, SUCH THAT non_source_angles IS CORRECT IN THE BEGINNING
+    def run_program(self, program) -> None:
+        self.can_interface = SocketCANInterface(interface="can0", bitrate=1000000)
+        self.can_interface.start()
         try:
-            program(can_interface)
-        except:
-            print('program error')
-        can_interface.stop()
+            program()
+        except Exception as e:
+            print(e)
+        self.can_interface.stop()
     #}}}
