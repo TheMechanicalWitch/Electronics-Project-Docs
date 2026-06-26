@@ -20,6 +20,8 @@ def get_map(A: list, B: list) -> dict:
 
 class CANWrapper:
     #{{{CONSTANTS
+    DEFAULT_PRECISION = 5.0
+
     JOINTS = [
         'shoulder_up_down'   ,
         'shoulder_left_right',
@@ -73,7 +75,7 @@ class CANWrapper:
     #}}}
 
     #{{{command_angles
-    def command_angles(self, angle_map: dict[str, float], speed=100, wait_until_complete=False, timeout=5.0, precision=5.0) -> bool:
+    def command_angles(self, angle_map: dict[str, float], speed=100, wait_until_complete=False, timeout=5.0, precision=DEFAULT_PRECISION) -> bool:
         start_time = time.time()
 
         for joint, angle in angle_map.items():
@@ -83,11 +85,16 @@ class CANWrapper:
             return False
 
         while time.time() - start_time >= timeout:
-            if False not in [target_angle + precision > get_angles()[joint] >= target_angle - precision
-                             for joint, target_angle in angle_map.items()]:
+            if angles_are_reached(angle_map, precision):
                 return True
             time.sleep(0.1)
         return False
+    #}}}
+
+    #{{{angles_are_reached
+    def angles_are_reached(self, angle_map, precision=DEFAULT_PRECISION):
+        return False not in [target_angle + precision > get_angles()[joint] >= target_angle - precision
+                             for joint, target_angle in angle_map.items()]
     #}}}
 
     #{{{command_angle
