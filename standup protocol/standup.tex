@@ -1,0 +1,65 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{datetime2}
+\usepackage{parskip}
+
+\begin{document}
+
+% ── Header ──────────────────────────────────────────────────────────────
+\begin{center}
+  {\LARGE\bfseries Mötesprotokoll}\\[0.5em]
+  {\large LIMB Summer Project}
+\end{center}
+
+\bigskip
+
+% ── Meeting info ─────────────────────────────────────────────────────────
+\begin{tabular}{@{} l l}
+  \textbf{Datum:}      & \DTMtoday \\
+\end{tabular}
+
+\bigskip
+
+\textbf{Närvarande: Adam, Adrian, Ashley,  Cornelia, Filip, Mahlin, Samuel, Whilliam}\quad
+
+\medskip
+
+% ── Agenda table ─────────────────────────────────────────────────────────
+\begin{tabularx}{\textwidth}{%
+    >{\bfseries}c                  % § number, bold
+    >{\raggedright\arraybackslash}X % Topic / discussion
+    >{\raggedright\arraybackslash}X  % Decision / action
+  }
+  \toprule
+  \textbf{\#} & \textbf{Skallkrav} & \textbf{Framsteg} \\
+  \midrule
+  1 & Kretskortsfräsar & \\[2.5em]
+  2 & Issues i github & \\[2.5em]
+  3 & Tillverkning av HR-EMG enheter & \\[2.5em]
+  4 & Kommunikation och integration& \\[2.5em]
+  5 & Mekanisk utvärdering& \\[2.5em]
+  6 & Visionssystem& \\[2.5em]
+  7 & ROS2 & \\[2.5em]
+  8 & Projektorganisation & \\[2.5em]
+\end{tabularx}
+\begin{tabularx}{\textwidth}{%
+    >{\bfseries}c                  % § number, bold
+    >{\raggedright\arraybackslash}X % Topic / discussion
+    >{\raggedright\arraybackslash}X  % Decision / action
+  }
+  \toprule
+  \textbf{\#} & \textbf{Övrigt arbete} & \textbf{Framsteg} \\
+  \midrule
+  1 & Övrigt 1 & \\[2.5em]
+  2 & Övrigt 2 & \\[2.5em]
+
+  \bottomrule
+\end{tabularx}
+
+\bigskip\bigskip
+
+
+\end{document}
