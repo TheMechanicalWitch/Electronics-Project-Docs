@@ -11,6 +11,7 @@ from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision
 
 import socket
+import json
 #}}}
 #{{{CONSTANTS
 W, H = 640, 360        # RGB preview + depth output size (16:9 = full FOV of the 1080p sensor)
@@ -163,7 +164,7 @@ def main():
             result = landmarker.detect_for_video(
                 mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb), last_ts)
 
-            report = []
+            report = {}
             y_txt = 20
             if result.pose_landmarks:
                 lms = result.pose_landmarks[0]
@@ -197,10 +198,10 @@ def main():
                         cv2.putText(frame, line, (8, y_txt),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.42, (255, 255, 255), 1)
                         y_txt += 16
-                        report.append(line)
+                        report[f"{side}_{name}"] = {'x': P[0], 'y': P[1], 'z': P[2]}
 
             if report and time.time() - last_print > UPDATE_DELAY:
-                rep_str = "\n".join(report)+"\n\n"
+                rep_str = json.dumps(report, sort_keys=true, indent=2)
                 print(rep_str)
                 sock.sendto(b'{rep_str}', ('127.0.0.1', PORT))
                 last_print = time.time()
