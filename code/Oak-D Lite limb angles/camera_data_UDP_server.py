@@ -12,6 +12,8 @@ from mediapipe.tasks.python import vision
 
 import socket
 import json
+
+import os
 #}}}
 #{{{CONSTANTS
 W, H = 640, 360        # RGB preview + depth output size (16:9 = full FOV of the 1080p sensor)
@@ -29,10 +31,18 @@ MODEL_PATH = Path(__file__).parent / f"pose_landmarker_{MODEL}.task"
 ARMS = {"R": (12, 14, 16),   # person's right arm
         "L": (11, 13, 15)}   # person's left arm
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-PORT = 12345
 
-UPDATE_DELAY = 0.5
+#----------------SOCKET------------------
+
+SERVER_IP = "0.0.0.0"
+SERVER_PORT = 12345
+
+CLIENT_IP = "127.0.0.1"
+CLIENT_PORT = 54321
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+UPDATE_DELAY = 0.1
 #}}}
 #{{{HELPER FUNCTIONS
 def get_model() -> str:
@@ -104,8 +114,6 @@ def to_xyz(u: int, v: int, z_mm: float, fx, fy, cx, cy) -> np.ndarray:
 #}}}
 #{{{MAIN LOOP
 def main():
-    sock.bind(('127.0.0.1', PORT))
-
     landmarker = vision.PoseLandmarker.create_from_options(vision.PoseLandmarkerOptions(
         base_options=mp_python.BaseOptions(model_asset_path=get_model()),
         running_mode=vision.RunningMode.VIDEO,
@@ -201,9 +209,12 @@ def main():
                         report[f"{side}_{name}"] = {'x': P[0], 'y': P[1], 'z': P[2]}
 
             if report and time.time() - last_print > UPDATE_DELAY:
-                rep_str = json.dumps(report, sort_keys=true, indent=2)
+                report["time"] = time.time()
+                rep_str = json.dumps(report, sort_keys=True, indent=2)
+                #os.system('clear')
+                print()
                 print(rep_str)
-                sock.sendto(b'{rep_str}', ('127.0.0.1', PORT))
+                sock.sendto(f'{rep_str}'.encode(), (CLIENT_IP, CLIENT_PORT))
                 last_print = time.time()
 
             cv2.imshow("arm 3D", frame)
