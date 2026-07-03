@@ -177,6 +177,8 @@ def main():
                 
 
                 report = {}
+                report["arms"] = {}
+                report["hands"] = {}
                 y_txt = 20
                 if result.pose_landmarks:
                     lms = result.pose_landmarks[0]
@@ -206,19 +208,22 @@ def main():
                                 cv2.putText(frame, line, (8, y_txt),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.42, (255, 255, 255), 1)
                                 y_txt += 16
-                                report[f"{side}_{name}"] = [P[0], P[1], P[2]] # x y z
+                                report["arms"][f"{side}_{name}"] = [P[0], P[1], P[2]] # x y z
 
                         if len(pts3d) != 3:
                             continue
                 if hand_result.hand_landmarks:
+                    #report["hands"] = hand_result.hand_landmarks
                     for hand_idx, hand_lms in enumerate(hand_result.hand_landmarks):
+                        report["hands"][hand_idx] = {}
                         for i, lm in enumerate(hand_lms):
                             u,v = int(lm.x * W), int(lm.y * H)
+                            report["hands"][hand_idx][i] = [lm.x, lm.y, lm.z]
                             if 0 <= u < W and 0 <= v < H:
                                 cv2.circle(frame, (u, v), 4, (0, 255, 0), -1)
                                 cv2.circle(depth_vis, (u, v), 4, (0, 255, 0), 1)
 
-                
+
 
                 if report and time.time() - last_print > UPDATE_DELAY:
                     report["time"] = time.time()
@@ -249,6 +254,6 @@ def main():
 
         cv2.destroyAllWindows()
 #}}}
-    
+
 if __name__ == "__main__":
     main()
