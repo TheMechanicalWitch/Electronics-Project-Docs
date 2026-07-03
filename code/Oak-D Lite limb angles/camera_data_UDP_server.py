@@ -206,7 +206,7 @@ def main():
                                 cv2.putText(frame, line, (8, y_txt),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.42, (255, 255, 255), 1)
                                 y_txt += 16
-                                report[f"{side}_{name}"] = {P[0], P[1], P[2]} # x y z
+                                report[f"{side}_{name}"] = [P[0], P[1], P[2]] # x y z
 
                         if len(pts3d) != 3:
                             continue
