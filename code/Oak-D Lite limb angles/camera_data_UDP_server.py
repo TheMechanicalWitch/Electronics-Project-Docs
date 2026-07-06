@@ -155,6 +155,7 @@ def main():
                         break
                     continue
                 frame = msg.getCvFrame()
+                frame = cv2.flip(frame, 1)
 
                 if depth_mm is None:                   # no depth yet, just show video
                     cv2.imshow("arm 3D", frame)
@@ -233,7 +234,7 @@ def main():
                     print(rep_str)
                     sock.sendto(f'{rep_str}'.encode(), (CLIENT_IP, CLIENT_PORT))
                     last_print = time.time()
-
+                
                 cv2.imshow("arm 3D", frame)
                 cv2.imshow("depth", depth_vis)
                 
