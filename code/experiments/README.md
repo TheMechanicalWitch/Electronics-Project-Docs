@@ -22,6 +22,5 @@ include("arm_visualizer.jl")
 
 The output file will be named `out.scad` and can be opened by OpenSCAD.
 
- [Visualizer doll](screenshots/man.png)
-
+![Visualizer doll](screenshots/man.png)
 *Have fun!*
