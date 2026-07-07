@@ -15,6 +15,7 @@ include("meta.jl")
 # From https://github.com/ase22003/CAD
 include("basic.jl")
 include("shapes.jl")
+include("linalg.jl")
 
 # From this directory
 include("arm_visualizer.jl")
@@ -23,4 +24,5 @@ include("arm_visualizer.jl")
 The output file will be named `out.scad` and can be opened by OpenSCAD.
 
 ![Visualizer doll](screenshots/man.png)
+
 *Have fun!*
