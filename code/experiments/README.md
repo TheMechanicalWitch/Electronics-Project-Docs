@@ -15,9 +15,9 @@ include("meta.jl")
 # From https://github.com/ase22003/CAD
 include("basic.jl")
 include("shapes.jl")
-include("linalg.jl")
 
 # From this directory
+include("linalg.jl")
 include("arm_visualizer.jl")
 ```
 
