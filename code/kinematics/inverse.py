@@ -7,3 +7,6 @@ from robotConfig import robot as ROBOT
 
 
 
+testPosition = SE3(0, 0, 0)
+state = ROBOT.ikine_LM(testPosition)
+print(state)
