@@ -5,6 +5,8 @@ segment_lengths = [33, 87, 225, 272]
 
 current_configuration::Vector{<:Real} = zeros(5)
 
+joint_limits = ((0, 90), (-90, 90), (-90, 90), (0, 160), (-90, 90))
+
 @logged function base(x::Real, y::Real, z::Real)
 	shoulders=50
 	union(
@@ -174,12 +176,25 @@ end
 
 using Optim
 
+@logged function joint_constraint_fitness(joints::Vector{<:Real}, cost::Int=100)::Real
+	normalize_deg(d) = d > 180 ? d - 360 : d
+
+	for i ∈ 1:5
+		if joint_limits[i][1] >= normalize_deg(joints[i])
+			return cost*(joint_limits[i][1] - normalize_deg(joints[i]))^2
+		elseif normalize_deg(joints[i]) >= joint_limits[i][2]
+			return cost*(normalize_deg(joints[i]) - joint_limits[i][2])^2
+		end
+	end
+	return 0
+end
+
 @logged function fitness(joints::Vector{<:Real}, target::RVect)::Real
-	distance_from_targets(joints, segment_lengths, [target, [0,0,0]])[1]^2
+	distance_from_targets(joints, segment_lengths, [target, [0,0,0]])[1]^2 + joint_constraint_fitness(joints)
 end
 
 @logged function fitness_with_elbow(joints::Vector{<:Real}, targets::Vector{<:RVect})::Real
-	sum(abs2, distance_from_targets(joints, segment_lengths, targets))
+	sum(abs2, distance_from_targets(joints, segment_lengths, targets)) + joint_constraint_fitness(joints)
 end
 
 @END_OF_DEBUG_CATEGORY
@@ -213,12 +228,18 @@ end
 @logged function goto_target(target::RVect, current_configuration::Vector{<:Real})::Vector{<:Real}
 	joint_targets = find_target(target, current_configuration)
 	render_arm(joint_targets)
+	if joint_constraint_fitness(joint_targets) != 0
+		@warn "outside joint limits"
+	end
 	return joint_targets
 end
 
 @logged function goto_targets(targets::Vector{<:RVect}, current_configuration::Vector{<:Real})::Vector{<:Real}
 	joint_targets = find_targets(targets, current_configuration)
 	render_arm(joint_targets)
+	if joint_constraint_fitness(joint_targets) != 0
+		@warn "outside joint limits"
+	end
 	return joint_targets
 end
 
