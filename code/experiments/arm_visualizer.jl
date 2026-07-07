@@ -1,14 +1,9 @@
-#requires basic.jl
-#requires shapes.jl
-#requires linalg.jl
-
-
-#THIS CODE IS VERY MESSY AND SHOULD BE REWRITTEN COMPELETELY
-
 
 @START_OF_DEBUG_CATEGORY "arm"
 
 segment_lengths = [33, 87, 225, 272]
+
+current_configuration::Vector{<:Real} = zeros(5)
 
 @logged function base(x::Real, y::Real, z::Real)
 	shoulders=50
@@ -122,6 +117,10 @@ end
 	end
 end
 
+@END_OF_DEBUG_CATEGORY
+
+@START_OF_DEBUG_CATEGORY "arm math"
+
 @logged function pred_matrix_end_effector(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})#::Matrix{<:Real}
 	#rx = LA_rotation_matrix_x
 	#ry = LA_rotation_matrix_y
@@ -158,7 +157,7 @@ end_effector_position(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})::
 
 elbow_position(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})::RVect = Vector{Real}((pred_matrix_elbow(joints, segment_lengths)*[0,0,0,1])[1:3])
 
-@logged function distance_from_targets(joints::Vector{<:Real}, segment_lengths::Vector{<:Real}, targets::Vector{<:RVect})::Vector{Real}
+@logged function distance_from_targets(joints::Vector{<:Real}, segment_lengths::Vector{<:Real}, targets::Vector{<:RVect})::Vector{<:Real}
 	funcs = [end_effector_position, elbow_position]
 	[
 		sqrt(
@@ -179,16 +178,48 @@ using Optim
 	distance_from_targets(joints, segment_lengths, [target, [0,0,0]])[1]^2
 end
 
-@logged function fitness_with_elbow(joints::Vector{<:Real}, targets::Vector{<:RVect})<:Real
+@logged function fitness_with_elbow(joints::Vector{<:Real}, targets::Vector{<:RVect})::Real
 	sum(abs2, distance_from_targets(joints, segment_lengths, targets))
 end
 
-@logged function follow_target(target::RVect)::Any
-	[Optim.minimizer(optimize(x->fitness([x..., 0], target), zeros(4)))..., 0] → render_arm
+@END_OF_DEBUG_CATEGORY
+
+@START_OF_DEBUG_CATEGORY "arm"
+
+@logged function find_target(target::RVect, last_joint_configuration::Vector{<:Real}=zeros(5))::Any
+	[Optim.minimizer(optimize(x->fitness([x..., 0], target), last_joint_configuration[1:4]))..., 0]
 end
 
-@logged function follow_targets(targets::Vector{<:RVect})::Any
-	[Optim.minimizer(optimize(x->fitness_with_elbow([x..., 0], targets), zeros(4)))..., 0] → render_arm
+@logged function find_targets(targets::Vector{<:RVect}, last_joint_configuration::Vector{<:Real}=zeros(5))::Any
+	[Optim.minimizer(optimize(x->fitness_with_elbow([x..., 0], targets), last_joint_configuration[1:4]))..., 0]
+end
+
+@logged function goto_target(target::RVect)::Nothing
+	global current_configuration
+	joint_targets = find_target(target, current_configuration)
+	render_arm(joint_targets)
+	current_configuration = joint_targets
+	return
+end
+
+@logged function goto_targets(targets::Vector{<:RVect})::Nothing
+	global current_configuration
+	joint_targets = find_targets(targets, current_configuration)
+	render_arm(joint_targets)
+	current_configuration = joint_targets
+	return
+end
+
+@logged function goto_target(target::RVect, current_configuration::Vector{<:Real})::Vector{<:Real}
+	joint_targets = find_target(target, current_configuration)
+	render_arm(joint_targets)
+	return joint_targets
+end
+
+@logged function goto_targets(targets::Vector{<:RVect}, current_configuration::Vector{<:Real})::Vector{<:Real}
+	joint_targets = find_targets(targets, current_configuration)
+	render_arm(joint_targets)
+	return joint_targets
 end
 
 @END_OF_DEBUG_CATEGORY
