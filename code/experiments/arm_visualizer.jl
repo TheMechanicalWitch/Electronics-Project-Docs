@@ -89,7 +89,7 @@ union(){
 	#}}}
 end
 
-@logged function render_arm(joints::Vector{<:Real}, resolution::Int=30)::Nothing
+@logged function render_arm(joints::Vector{<:Real}, targets::Vector{<:RVect}=[], resolution::Int=30)::Nothing
 	write_out(
 		set_rendering_parameter("fn", resolution),
 		base(50,100,130),
@@ -104,7 +104,11 @@ end
 		),
 		translate(elbow_position(joints, segment_lengths),
 			sphere(30) → highlight
-		)
+		),
+		[
+			translate(targets[i], "color(\"#$(("00ff00","ff00ff","00ffff","ffff00")[i])\")sphere(12);")
+			for i in 1:length(targets)
+		]...
 	)
 end
 
@@ -113,6 +117,7 @@ end
 		println(s)
 		render_arm(
 			[fun(s) for fun ∈ funs],
+			[],
 			resolution,
 		)
 		sleep(Δtime)
@@ -212,7 +217,7 @@ end
 @logged function goto_target(target::RVect)::Nothing
 	global current_configuration
 	joint_targets = find_target(target, current_configuration)
-	render_arm(joint_targets)
+	render_arm(joint_targets, [target], 10)
 	current_configuration = joint_targets
 	return
 end
@@ -220,14 +225,14 @@ end
 @logged function goto_targets(targets::Vector{<:RVect})::Nothing
 	global current_configuration
 	joint_targets = find_targets(targets, current_configuration)
-	render_arm(joint_targets)
+	render_arm(joint_targets, targets, 10)
 	current_configuration = joint_targets
 	return
 end
 
 @logged function goto_target(target::RVect, current_configuration::Vector{<:Real})::Vector{<:Real}
 	joint_targets = find_target(target, current_configuration)
-	render_arm(joint_targets)
+	render_arm(joint_targets, [target], 10)
 	if joint_constraint_fitness(joint_targets) != 0
 		@warn "outside joint limits"
 	end
@@ -236,7 +241,7 @@ end
 
 @logged function goto_targets(targets::Vector{<:RVect}, current_configuration::Vector{<:Real})::Vector{<:Real}
 	joint_targets = find_targets(targets, current_configuration)
-	render_arm(joint_targets)
+	render_arm(joint_targets, targets, 10)
 	if joint_constraint_fitness(joint_targets) != 0
 		@warn "outside joint limits"
 	end
