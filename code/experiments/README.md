@@ -11,6 +11,7 @@ Run the following commands in the shell before attempting to execute a function 
 include("debug.jl")
 include("utils.jl")
 include("meta.jl")
+include("math.jl")
 
 # From https://github.com/ase22003/CAD
 include("basic.jl")
