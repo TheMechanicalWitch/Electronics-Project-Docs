@@ -6,6 +6,8 @@
   - Write a general forward kinematics function for any list of sucessive joints and offsets.
 - Implement support for two cameras looking at the person at different angles and agreeing on the interest point positions.
   - Normalize the angle of the shoulder to be relative to the other shoulder (such that the arm doesn't rotate when you rotate your body). This will allow the arm to be controlled with the camera lookin at a side view angle).
-- Try to make the `Optim.minimizer`/`optimize` function faster, or rewrite the function from scratch in order to obtain more control over how it works (which would not be too difficult, and also fun).
+- ~~Try to make the `Optim.minimizer`/`optimize` function faster, or rewrite the function from scratch in order to obtain more control over how it works (which would not be too difficult, and also fun).~~
+- Make a function using the new [`optimize`](https://github.com/ase22003/Julia-utils/blob/main/math.jl) function to find the optimal parameters (specifically `agression`) for a given arm/list of segment lengths.
+- Modify the [`optimize`](https://github.com/ase22003/Julia-utils/blob/main/math.jl) function such that oscilation around the minimum is prevented.
 - Work on identifying the angle of the wrist
 - Work on identifying hand angles or hand states
