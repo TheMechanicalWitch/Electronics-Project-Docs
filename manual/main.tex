@@ -1,0 +1,95 @@
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+
+\documentclass[12pt]{article}
+\usepackage{graphicx} % This lets you include figures
+\usepackage{hyperref} % This lets you make links to web locations
+\graphicspath{ {./images/} }
+
+\usepackage[rightcaption]{sidecap}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+
+\usepackage{float}
+
+\usepackage{imakeidx}
+
+\makeindex
+
+
+\title{Manual}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle{}
+
+\tableofcontents
+
+\clearpage
+\newpage
+
+\section{Flatcam:}
+
+%\maketitle{Setup}
+
+
+\subsection{Isolation Routing}
+
+
+
+\subsection{Drilling}
+
+
+\subsection{Board Cutout}
+
+
+\subsection{Copper Area Clear}
+
+
+
+\subsection{2-side PCB}
+
+\clearpage
+\newpage
+
+\section{Wegster operation:}
+
+
+\subsection{start up}
+
+load the g-code files that you wish to use onto the computer in a way that you can find them. Open Wegstr CNC controlling software if it is not already open.
+if the indicator under status reads device ready 
+
+\subsection{safety}
+The manufacturer recommends the use of eye protection and gloves while operating the machine. 
+
+\subsection{Isolation Routing} 
+load the g-code for your isolation routing push the button in the software under the text auto level 
+
+\subsubsection{Drilling}
+load the g-code for the drilling
+change to the drill bit 
+    if the isolation routing has bin used, use the x and y movement controls to move the spindle to x = 0 and y = 0 and than use the z axis control to move the drill bit down to the copper and set z = 0 
+    else 
+
+\subsection{Board Cutout}
+\subsection{2-side PCB}
+\newpage
+
+
+\section{Links:}
+
+\subsection{flatcam:}
+
+\url{http://flatcam.org}
+
+\subsection{wegstr manual pdf:}
+
+\url{https://testglassware.com/wp-content/uploads/2022/05/MANUAL-ITEM-1.pdf}
+
+\newpage
+
+\listoffigures
+
+\end{document}
