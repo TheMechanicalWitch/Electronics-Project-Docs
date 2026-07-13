@@ -9,7 +9,7 @@ joint_limits = ((0, 90), (-90, 90), (-90, 90), (0, 160), (-90, 90))
 
 @logged function base(x::Real, y::Real, z::Real)
 	shoulders=50
-	union(
+	return union(
 		translate((-x/2, -y, -z),
 			cube(x, y, z)
 		),
@@ -36,7 +36,7 @@ end
 	cylinder_dim = "$(thickness),$(thickness/2),$(thickness/2)"
 	cube_dim=15
 	#{{{
-	"""
+	return """
 rotate([0,90,0])
     cylinder($cylinder_dim,center=true);
 rotate([$(joints[1]),0,0])
@@ -110,6 +110,7 @@ end
 			for i in 1:length(targets)
 		]...
 	)
+	return
 end
 
 @logged function animate_arm(funs::Vector{Function}, steps::Real, Δstep::Real, Δtime::Real, resolution::Int=10)::Nothing
@@ -122,6 +123,7 @@ end
 		)
 		sleep(Δtime)
 	end
+	return
 end
 
 @END_OF_DEBUG_CATEGORY
@@ -135,7 +137,7 @@ end
 	#t  = LA_translation_matrix
 	#rx(j1)*t(0,l1,-l2)*ry(-j2)*t(0,0,-l3/2)*rz(-j3)*t(0,0,-l3/2)*r(0,-j4,0)*t(0,0,-l4/2)*rz(j5)*t(0,0,-l4/2)
 
-	LA_rotation_matrix_x(joints[1])*
+	return LA_rotation_matrix_x(joints[1])*
 	LA_translation_matrix(0,segment_lengths[2],-segment_lengths[1])*
 	LA_rotation_matrix_y(-joints[2])*
 	LA_translation_matrix(0,0,-segment_lengths[3]/2)*
@@ -154,7 +156,7 @@ end
 	#t  = LA_translation_matrix
 	#rx(j1)*t(0,l1,-l2)*ry(-j2)*t(0,0,-l3/2)*rz(-j3)*t(0,0,-l3/2)*r(0,-j4,0)*t(0,0,-l4/2)*rz(j5)*t(0,0,-l4/2)
 
-	LA_rotation_matrix_x(joints[1])*
+	return LA_rotation_matrix_x(joints[1])*
 	LA_translation_matrix(0,segment_lengths[2],-segment_lengths[1])*
 	LA_rotation_matrix_y(-joints[2])*
 	LA_translation_matrix(0,0,-segment_lengths[3])
@@ -166,7 +168,7 @@ elbow_position(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})::RVect =
 
 @logged function distance_from_targets(joints::Vector{<:Real}, segment_lengths::Vector{<:Real}, targets::Vector{<:RVect})::Vector{<:Real}
 	funcs = [end_effector_position, elbow_position]
-	[
+	return [
 		sqrt(
 			sum(
 				[
@@ -178,8 +180,6 @@ elbow_position(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})::RVect =
 		for i in 1:2
 	]
 end
-
-using Optim
 
 @logged function joint_constraint_fitness(joints::Vector{<:Real}, cost::Int=100)::Real
 	normalize_deg(d) = d > 180 ? d - 360 : d
@@ -195,43 +195,43 @@ using Optim
 end
 
 @logged function fitness(joints::Vector{<:Real}, target::RVect)::Real
-	distance_from_targets(joints, segment_lengths, [target, [0,0,0]])[1]^2 + joint_constraint_fitness(joints)
+	return distance_from_targets(joints, segment_lengths, [target, [0,0,0]])[1]^2 + joint_constraint_fitness(joints)
 end
 
 @logged function fitness_with_elbow(joints::Vector{<:Real}, targets::Vector{<:RVect})::Real
-	sum(abs2, distance_from_targets(joints, segment_lengths, targets)) + joint_constraint_fitness(joints)
+	return sum(abs2, distance_from_targets(joints, segment_lengths, targets)) + joint_constraint_fitness(joints)
 end
 
 @END_OF_DEBUG_CATEGORY
 
 @START_OF_DEBUG_CATEGORY "arm"
 
-@logged function find_target(target::RVect, last_joint_configuration::Vector{<:Real}=zeros(5))::Any
-	[Optim.minimizer(optimize(x->fitness([x..., 0], target), last_joint_configuration[1:4]))..., 0]
+@logged function find_target(target::RVect, last_joint_configuration::Vector{<:Real}=zeros(5), time_limit::Float64=0.1)::Any
+	return [optimize(x->fitness([x..., 0], target), last_joint_configuration[1:4], 0.01, 0.01, 0.0, time_limit)..., 0]
 end
 
-@logged function find_targets(targets::Vector{<:RVect}, last_joint_configuration::Vector{<:Real}=zeros(5))::Any
-	[Optim.minimizer(optimize(x->fitness_with_elbow([x..., 0], targets), last_joint_configuration[1:4]))..., 0]
+@logged function find_targets(targets::Vector{<:RVect}, last_joint_configuration::Vector{<:Real}=zeros(5), time_limit::Float64=0.1)::Any
+	return [optimize(x->fitness_with_elbow([x..., 0], targets), last_joint_configuration[1:4], 0.01, 0.01, 0.0, time_limit)..., 0]
 end
 
-@logged function goto_target(target::RVect)::Nothing
+@logged function goto_target(target::RVect, time_limit::Float64=0.1)::Nothing
 	global current_configuration
-	joint_targets = find_target(target, current_configuration)
+	joint_targets = find_target(target, current_configuration, time_limit)
 	render_arm(joint_targets, [target], 10)
 	current_configuration = joint_targets
 	return
 end
 
-@logged function goto_targets(targets::Vector{<:RVect})::Nothing
+@logged function goto_targets(targets::Vector{<:RVect}, time_limit::Float64=0.1)::Nothing
 	global current_configuration
-	joint_targets = find_targets(targets, current_configuration)
+	joint_targets = find_targets(targets, current_configuration, time_limit)
 	render_arm(joint_targets, targets, 10)
 	current_configuration = joint_targets
 	return
 end
 
-@logged function goto_target(target::RVect, current_configuration::Vector{<:Real})::Vector{<:Real}
-	joint_targets = find_target(target, current_configuration)
+@logged function goto_target(target::RVect, current_configuration::Vector{<:Real}, time_limit::Float64=0.1)::Vector{<:Real}
+	joint_targets = find_target(target, current_configuration, time_limit)
 	render_arm(joint_targets, [target], 10)
 	if joint_constraint_fitness(joint_targets) != 0
 		@warn "outside joint limits"
@@ -239,8 +239,8 @@ end
 	return joint_targets
 end
 
-@logged function goto_targets(targets::Vector{<:RVect}, current_configuration::Vector{<:Real})::Vector{<:Real}
-	joint_targets = find_targets(targets, current_configuration)
+@logged function goto_targets(targets::Vector{<:RVect}, current_configuration::Vector{<:Real}, time_limit::Float64=0.1)::Vector{<:Real}
+	joint_targets = find_targets(targets, current_configuration, time_limit)
 	render_arm(joint_targets, targets, 10)
 	if joint_constraint_fitness(joint_targets) != 0
 		@warn "outside joint limits"
