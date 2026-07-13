@@ -14,3 +14,7 @@ This program is used together with the Oak-D Lite camera to measure and visualiz
 * Have the Oak-D Lite camera connected to you computer. Make sure the cable and port you are using have support for USB 3.0. 
 * If the camera is recognized by the computer, a window showing the video output of the camera with an overlay showing arm angles should show up when running the program.
 
+If you have trouble connecting the camera, run the following command in the terminal:
+```
+kill -SIGKILL $(pgrep -f camera_data_UDP_server.py)
+```
