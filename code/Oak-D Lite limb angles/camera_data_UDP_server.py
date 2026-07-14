@@ -6,6 +6,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 import depthai as dai
+import math as math
 import mediapipe as mp
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision
@@ -109,6 +110,22 @@ def to_xyz(u: int, v: int, z_mm: float, fx, fy, cx, cy) -> np.ndarray:
     """Pixel (u, v) + depth -> metric X, Y, Z in the camera frame (meters)."""
     z = z_mm / 1000.0
     return np.array([(u - cx) * z / fx, (v - cy) * z / fy, z])
+
+def joint_angle(a, b, c):
+    #math at https://math.stackexchange.com/questions/974178/how-to-calculate-the-angle-between-2-vectors-in-3d-space-given-a-preset-function/974400#974400
+    ba = (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+    bc = (c[0]-b[0], c[1]-b[1], c[2]-b[2])
+
+    dot = sum(x*y for x, y in zip(ba, bc))
+    mag_ba = math.sqrt(sum(x*x for x in ba))
+    mag_bc = math.sqrt(sum(x*x for x in bc))
+
+    if mag_ba == 0 or mag_bc == 0:
+        return 0.0
+
+    cos_theta = dot / (mag_ba * mag_bc)
+    return math.degrees(math.acos(cos_theta))
+
 #}}}
 #{{{MAIN LOOP
 def main():
@@ -217,12 +234,41 @@ def main():
                     #report["hands"] = hand_result.hand_landmarks
                     for hand_idx, hand_lms in enumerate(hand_result.hand_landmarks):
                         report["hands"][hand_idx] = {}
+                        points_space = []
+                        hand_identifier = 0.0
                         for i, lm in enumerate(hand_lms):
                             u,v = int(lm.x * W), int(lm.y * H)
                             report["hands"][hand_idx][i] = [lm.x, lm.y, lm.z]
+                            lm.space= lm.x + lm.y + lm.z
+                            point = (lm.x,lm.y,lm.z)
+                            points_space.append(point)
                             if 0 <= u < W and 0 <= v < H:
                                 cv2.circle(frame, (u, v), 4, (0, 255, 0), -1)
                                 cv2.circle(depth_vis, (u, v), 4, (0, 255, 0), 1)
+                        for p in range(len(points_space) - 1):
+                            distance = math.dist(points_space[p], points_space[p + 1])
+                            hand_identifier += distance
+                            print(distance)
+                        reference = math.dist(points_space[0], points_space[12])
+                        if reference > 0:
+                            hand_identifier /= reference
+
+                            middle_pip = joint_angle(points_space[0], points_space[10], points_space[11])
+                            index_pip = joint_angle(points_space[0], points_space[6], points_space[7])
+                            pinky_pip = joint_angle(points_space[0], points_space[18], points_space[19])
+                            hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])  
+
+                            print(index_pip, middle_pip, pinky_pip, hand_angletowrist)
+                        if index_pip <= 70:
+                            print("hand is closed")
+                        if middle_pip <= 70:
+                            print("hand is closed")
+                        if pinky_pip <= 70:
+                            print("hand is closed")
+                        else:
+                            print("hand is open")
+
+
 
 
 
