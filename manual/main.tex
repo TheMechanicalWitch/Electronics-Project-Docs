@@ -59,22 +59,52 @@
 \subsection{start up}
 
 load the g-code files that you wish to use onto the computer in a way that you can find them. Open Wegstr CNC controlling software if it is not already open.
-if the indicator under status reads device ready 
+if the indicator under status does not read device ready push the black button next to the power button on the wegstr CNCMilling Machine 
+clamp down the copper laminate to the machine bed 
+locate the  bits with corresponding dimensions  as the tools used in FlatCAM
 
 \subsection{safety}
-The manufacturer recommends the use of eye protection and gloves while operating the machine. 
+The manufacturer recommends the use of eye protection and protective gloves while operating the machine. 
 
-\subsection{Isolation Routing} 
+\subsection{Isolation Routing}
+change the bit to the spital bit
 load the g-code for your isolation routing push the button in the software under the text auto level 
-
-\subsubsection{Drilling}
+    than press the button labeled start 
+use the vacuum to remove the fiberglass recommended to use while the Routing is tacking place  
+\subsection{Drilling}
 load the g-code for the drilling
+
 change to the drill bit 
-    if the isolation routing has bin used, use the x and y movement controls to move the spindle to x = 0 and y = 0 and than use the z axis control to move the drill bit down to the copper and set z = 0 
-    else 
+
+if the isolation routing has bin used, use the x and y movement controls to move the spindle to x = 0 and y = 0 and than use the z axis control to move the drill bit down to the copper and set z = 0 
+    
+else push the auto level button \
+  
+ than press the button labeled start
+ use the vacuum to remove the fiberglass recommended to use while the drilling is tacking place  
+
 
 \subsection{Board Cutout}
+this is the last operation for the PCB  
+change the bit to the Flat end milling bit 
+load the g-code for the board cutout 
+move the spindle to 0,0,0
+press start 
+ use the vacuum to remove the fiberglass recommended to use while the milling is tacking place  
+
 \subsection{2-side PCB}
+load the alignment drill  g-code
+change the bit to your drill bit 
+use the x and y movement controls to move the spindle to x = 0 and y = 0 and then use the z axis control to move the drill bit down to the copper and set z = 0 
+press the start button 
+
+declamp the laminate 
+flip the laminate to the other side 
+use the alignment holes to align the laminate 
+load the bottom isolation routing g-code 
+change to the spiral bit 
+move the spindle to 0,0,0 and press auto level 
+
 \newpage
 
 
@@ -82,7 +112,7 @@ change to the drill bit
 
 \subsection{flatcam:}
 
-\url{http://flatcam.org}
+\url{http://flatcam.org/manual/index.html}
 
 \subsection{wegstr manual pdf:}
 
