@@ -253,20 +253,33 @@ def main():
                         if reference > 0:
                             hand_identifier /= reference
 
-                            middle_pip = joint_angle(points_space[0], points_space[10], points_space[11])
-                            index_pip = joint_angle(points_space[0], points_space[6], points_space[7])
-                            pinky_pip = joint_angle(points_space[0], points_space[18], points_space[19])
-                            hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])  
-
-                            print(index_pip, middle_pip, pinky_pip, hand_angletowrist)
-                        if index_pip <= 70:
-                            print("hand is closed")
-                        if middle_pip <= 70:
-                            print("hand is closed")
-                        if pinky_pip <= 70:
-                            print("hand is closed")
-                        else:
-                            print("hand is open")
+                            thumb_angle = joint_angle(points_space[0], points_space[2], points_space[4])
+                            index_angle = joint_angle(points_space[0], points_space[6], points_space[7])
+                            middle_angle = joint_angle(points_space[0], points_space[10], points_space[11])
+                            ring_angle = joint_angle(points_space[0], points_space[13], points_space[16])
+                            pinky_angle = joint_angle(points_space[0], points_space[18], points_space[19])
+                            hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])
+                        #fingers = {"thumb": thumb_angle, "index": index_angle, "middle": middle_angle, "ring": ring_angle, "pinky": pinky_angle}   
+                            if thumb_angle <= 70:
+                                report["hands"][hand_idx]["thumb"] = "close"
+                            else:
+                                report["hands"][hand_idx]["thumb"] = "open"
+                            if index_angle <= 70:
+                                report["hands"][hand_idx]["indexfinger"] = "close"
+                            else:
+                                report["hands"][hand_idx]["indexfinger"] = "open"
+                            if middle_angle <= 70:
+                                report["hands"][hand_idx]["middlefinger"] = "close"
+                            else:
+                                report["hands"][hand_idx]["middlefinger"] = "open"
+                            if ring_angle <= 70:
+                                report["hands"][hand_idx]["ringfinger"] = "close"
+                            else:
+                                report["hands"][hand_idx]["middlefinger"] = "open"
+                            if pinky_angle <= 70:
+                                report["hands"][hand_idx]["pinkyfinger"] = "close"
+                            else:
+                                report["hands"][hand_idx]["pinkyfinger"] = "open"
 
 
 
@@ -274,7 +287,7 @@ def main():
 
                 if report and time.time() - last_print > UPDATE_DELAY:
                     report["time"] = time.time()
-                    rep_str = json.dumps(report, sort_keys=True, indent=2)
+                    rep_str = json.dumps(report, sort_keys=False, indent=2)
                     #os.system('clear')
                     print()
                     print(rep_str)
