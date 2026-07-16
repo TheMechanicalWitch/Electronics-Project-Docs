@@ -10,4 +10,4 @@
 - Make a function using the new [`optimize`](https://github.com/ase22003/Julia-utils/blob/main/math.jl) function to find the optimal parameters (specifically `agression`) for a given arm/list of segment lengths.
 - Modify the [`optimize`](https://github.com/ase22003/Julia-utils/blob/main/math.jl) function such that oscilation around the minimum is prevented.
 - Work on identifying the angle of the wrist
-- Work on identifying hand angles or hand states
+- ~~Work on identifying hand angles or hand states~~
