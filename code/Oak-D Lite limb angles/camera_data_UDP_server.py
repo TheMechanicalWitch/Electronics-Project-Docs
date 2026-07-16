@@ -280,6 +280,24 @@ def main():
                                 report["hands"][hand_idx]["pinkyfinger"] = "close"
                             else:
                                 report["hands"][hand_idx]["pinkyfinger"] = "open"
+                            closed_count = sum(
+                                1 for finger in [
+                                    "thumb",
+                                    "indexfinger",
+                                    "middlefinger",
+                                    "ringfinger",
+                                    "pinkyfinger"
+                                ]
+                                if fingers[finger] == "close"
+                            )
+
+                            if closed_count >= 3:
+                                hand_state = "closed"
+                            else:
+                                hand_state = "open"
+
+                            report["hands"][hand_idx]["hand_state"] = hand_state
+
 
 
 
