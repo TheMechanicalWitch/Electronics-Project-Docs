@@ -38,8 +38,13 @@ tools→calculator
 
 \subsection{Isolation Routing}
 File→Open Gerber
+enter the tool diameter that you obtain from the calculator under isolation routing 
 
+click generate geometry button 
 
+select a feed rate bettwan 0 and 170 mm per minute  higer feed rate implies faster routing time but ruffer cuts (recomended: 170)
+set a Cut Z  average standard copper thickness is 0.05 mm but consult the laminates info
+set travel Z to 2.00 mm 
 
 \subsection{Drilling}
 File→Open Excellon
@@ -56,7 +61,13 @@ File→Open Gerber
 
 
 \subsection{2-side PCB}
-File→Open Gerber
+open File→Open Gerber for both top and bottom layers of the PCB
+
+select Tools→Double-sided PCB tool
+select which mirror axis 
+create a mirror image of the bottom layer by clicking on Create Mirror 
+
+create the alignment hole drill object by clicking Create alinment drill in the Double-sided PCB tool 
 
 \clearpage
 \newpage
