@@ -92,7 +92,7 @@ end
 @logged function render_arm(joints::Vector{<:Real}, targets::Vector{<:RVect}=[], resolution::Int=30)::Nothing
 	write_out(
 		set_rendering_parameter("fn", resolution),
-		base(50,100,130),
+		base(((50,100,130) .→ Float64)...),
 		arm(joints, segment_lengths),
 		#translate((0,-50,0),
 		#	mirror((0,1,0),
@@ -181,7 +181,7 @@ elbow_position(joints::Vector{<:Real}, segment_lengths::Vector{<:Real})::RVect =
 	]
 end
 
-@logged function joint_constraint_fitness(joints::Vector{<:Real}, cost::Int=100)::Real
+@logged function joint_constraint_fitness(joints::Vector{<:Real}, margin::Real=2, cost::Real=100)::Real #TODO: ADD "MARGIN" TO CALCULATION
 	normalize_deg(d) = d > 180 ? d - 360 : d
 
 	for i ∈ 1:5
@@ -207,11 +207,44 @@ end
 @START_OF_DEBUG_CATEGORY "arm"
 
 @logged function find_target(target::RVect, last_joint_configuration::Vector{<:Real}=zeros(5), time_limit::Float64=0.1)::Any
-	return [optimize(x->fitness([x..., 0], target), last_joint_configuration[1:4], 0.01, 0.01, 0.0, time_limit)..., 0]
+	err_vect = x->[
+		error_vector(
+			x->end_effector_position(x, segment_lengths),
+			x,
+			target .→ Float64
+		)...,
+		joint_constraint_fitness(x)
+	]
+
+	return levenberg_marquardt(
+		err_vect,
+		last_joint_configuration,
+		0.0,
+		time_limit
+	)
 end
 
 @logged function find_targets(targets::Vector{<:RVect}, last_joint_configuration::Vector{<:Real}=zeros(5), time_limit::Float64=0.1)::Any
-	return [optimize(x->fitness_with_elbow([x..., 0], targets), last_joint_configuration[1:4], 0.01, 0.01, 0.0, time_limit)..., 0]
+	err_vect = x->[
+		error_vector(
+			x->end_effector_position(x, segment_lengths),
+			x,
+			targets[1] .→ Float64
+		)...,
+		error_vector(
+			x->elbow_position(x, segment_lengths),
+			x,
+			targets[2] .→ Float64
+		)...,
+		joint_constraint_fitness(x)
+	]
+
+	return levenberg_marquardt(
+		err_vect,
+		last_joint_configuration,
+		0.0,
+		time_limit
+	)
 end
 
 @logged function goto_target(target::RVect, time_limit::Float64=0.1)::Nothing
