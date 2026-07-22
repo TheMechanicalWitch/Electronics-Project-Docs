@@ -3,7 +3,7 @@
 
 segment_lengths = [33, 87, 225, 272]
 
-current_configuration::Vector{<:Real} = zeros(5)
+global current_configuration::Vector{<:Real} = zeros(5)
 
 joint_limits = ((0, 90), (-90, 90), (-90, 90), (0, 160), (-90, 90))
 
