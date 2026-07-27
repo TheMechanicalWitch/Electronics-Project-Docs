@@ -236,20 +236,55 @@ def main():
                         report["hands"][hand_idx] = {}
                         points_space = []
                         hand_identifier = 0.0
+
                         for i, lm in enumerate(hand_lms):
-                            u,v = int(lm.x * W), int(lm.y * H)
+                            u, v = int(lm.x * W), int(lm.y * H)
                             report["hands"][hand_idx][i] = [lm.x, lm.y, lm.z]
-                            lm.space= lm.x + lm.y + lm.z
-                            point = (lm.x,lm.y,lm.z)
+                            lm.space = lm.x + lm.y + lm.z
+
+                            point = (lm.x, lm.y, lm.z)
                             points_space.append(point)
+
                             if 0 <= u < W and 0 <= v < H:
                                 cv2.circle(frame, (u, v), 4, (0, 255, 0), -1)
                                 cv2.circle(depth_vis, (u, v), 4, (0, 255, 0), 1)
+
+                        wrist = np.array(points_space[0])
+                        index = np.array(points_space[5])
+                        pinky = np.array(points_space[17])
+
+                        v1 = index - wrist
+                        v2 = pinky - wrist
+
+                        normal = np.cross(v1, v2)
+                        norm = np.linalg.norm(normal)
+
+                        if norm != 0:
+                            normal = normal / norm
+                        print("Number")
+                        print(normal[2])
+                        if normal[2] < -0.25:
+                            report["hands"][hand_idx]["rotation"] = "facing"
+                        elif normal[2] > 0.25:
+                            report["hands"][hand_idx]["rotation"] = "unfacing or whatever"
+
+                        cv2.putText(
+                            frame,
+                            report["hands"][hand_idx]["rotation"],
+                            (int(points_space[0][0] * W), int(points_space[0][1] * H) - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.6,
+                            (0, 255, 255),
+                            2
+                        )
+
                         for p in range(len(points_space) - 1):
                             distance = math.dist(points_space[p], points_space[p + 1])
                             hand_identifier += distance
                             print(distance)
+
                         reference = math.dist(points_space[0], points_space[12])
+
                         if reference > 0:
                             hand_identifier /= reference
 
@@ -259,29 +294,36 @@ def main():
                             ring_angle = joint_angle(points_space[0], points_space[13], points_space[16])
                             pinky_angle = joint_angle(points_space[0], points_space[18], points_space[19])
                             hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])
+
                             print(thumb_angle)
-                        #fingers = {"thumb": thumb_angle, "index": index_angle, "middle": middle_angle, "ring": ring_angle, "pinky": pinky_angle}   
+
                             if thumb_angle <= 150:
                                 report["hands"][hand_idx]["thumb"] = "close"
                             else:
                                 report["hands"][hand_idx]["thumb"] = "open"
+
                             if index_angle <= 70:
                                 report["hands"][hand_idx]["indexfinger"] = "close"
                             else:
                                 report["hands"][hand_idx]["indexfinger"] = "open"
+
                             if middle_angle <= 70:
                                 report["hands"][hand_idx]["middlefinger"] = "close"
                             else:
                                 report["hands"][hand_idx]["middlefinger"] = "open"
+
                             if ring_angle <= 70:
                                 report["hands"][hand_idx]["ringfinger"] = "close"
                             else:
                                 report["hands"][hand_idx]["ringfinger"] = "open"
+
                             if pinky_angle <= 70:
                                 report["hands"][hand_idx]["pinkyfinger"] = "close"
                             else:
                                 report["hands"][hand_idx]["pinkyfinger"] = "open"
+
                             fingers = report["hands"][hand_idx]
+
                             closed_count = sum(
                                 1 for finger in [
                                     "thumb",
@@ -299,7 +341,6 @@ def main():
                                 hand_state = "open"
 
                             report["hands"][hand_idx]["hand_state"] = hand_state
-
                 if report and time.time() - last_print > UPDATE_DELAY:
                     report["time"] = time.time()
                     rep_str = json.dumps(report, sort_keys=False, indent=2)
