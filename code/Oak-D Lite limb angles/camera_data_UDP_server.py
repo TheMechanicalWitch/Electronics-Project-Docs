@@ -172,7 +172,7 @@ def main():
                         break
                     continue
                 frame = msg.getCvFrame()
-                frame = cv2.flip(frame, 1)
+                #frame = cv2.flip(frame, 1)
 
                 if depth_mm is None:                   # no depth yet, just show video
                     cv2.imshow("arm 3D", frame)
@@ -259,8 +259,9 @@ def main():
                             ring_angle = joint_angle(points_space[0], points_space[13], points_space[16])
                             pinky_angle = joint_angle(points_space[0], points_space[18], points_space[19])
                             hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])
+                            print(thumb_angle)
                         #fingers = {"thumb": thumb_angle, "index": index_angle, "middle": middle_angle, "ring": ring_angle, "pinky": pinky_angle}   
-                            if thumb_angle <= 70:
+                            if thumb_angle <= 150:
                                 report["hands"][hand_idx]["thumb"] = "close"
                             else:
                                 report["hands"][hand_idx]["thumb"] = "open"
@@ -275,7 +276,7 @@ def main():
                             if ring_angle <= 70:
                                 report["hands"][hand_idx]["ringfinger"] = "close"
                             else:
-                                report["hands"][hand_idx]["middlefinger"] = "open"
+                                report["hands"][hand_idx]["ringfinger"] = "open"
                             if pinky_angle <= 70:
                                 report["hands"][hand_idx]["pinkyfinger"] = "close"
                             else:
@@ -299,11 +300,6 @@ def main():
 
                             report["hands"][hand_idx]["hand_state"] = hand_state
 
-
-
-
-
-
                 if report and time.time() - last_print > UPDATE_DELAY:
                     report["time"] = time.time()
                     rep_str = json.dumps(report, sort_keys=False, indent=2)
@@ -312,10 +308,10 @@ def main():
                     print(rep_str)
                     sock.sendto(f'{rep_str}'.encode(), (CLIENT_IP, CLIENT_PORT))
                     last_print = time.time()
-                
+
                 cv2.imshow("arm 3D", frame)
                 cv2.imshow("depth", depth_vis)
-                
+
                 if cv2.waitKey(1) in (ord('q'), 27):
                     break
     except Exception as e:
