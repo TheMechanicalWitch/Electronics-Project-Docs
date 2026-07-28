@@ -34,51 +34,52 @@
 %\maketitle{Setup}
 
 \subsection{calculate tool diameter}
-tools→calculator
-input tip-Diameter
-input tip angel 
-input desired cut-z  
-use the tool diameter given 
+tool→calculator
+input tip-Diameter as 0.2mm
+input tip angel as 60
+input desired cut-z as 0.1 
+use the tool diameter given in isolating routing
 
 \subsection{Isolation Routing}
-File→Open Gerber
-select the gerber file that has your isolation routing 
+File→Open→Open Gerber
+ in Project tab select the gerber file that has your isolation routing 
+ select isolation routing under Tools in gerber object isolation 
+ In isolation tool tool add from DB and input the tool Dia that was calculated in the tool calculator 
 
-enter the tool diameter that you obtain from the calculator under isolation routing 
+press the generate geometry button
 
-select a feed rate between 0 and 170 mm per minute  higer feed rate implies faster routing time but rougher cuts (recommended: 170)
-set a Cut Z  average standard copper thickness is 0.05 mm but consult the laminates info
-set travel Z to 2.00 mm 
-
-click generate geometry button 
-
-select the generated geometry 
-
-
-click on the Export button under "export G-code" 
+in parameters for Tool 1, select the dia of the v-tip and input 0,02 then input the angle of the v-tip 60, both both x-y and z feed rates between 0-170 (170 recommended) 
+set the spindle speed at 11000. 
+press Generate CNCJob object 
+save the cnc code for the usb drive.
 
 \subsection{Drilling}
-File→Open Excellon
+File→Open→Open Excellon
+select drilling Tool
 
 select the tools you want to create the CNC job fore 
 
-Adjust Drill Z to the thickness of the copper laminate 
+Adjust Drill Z to the thickness of the copper laminate( value must be negative )
 
 set travel Z to 2.00 mm 
 
-set feed rate between 0 and 170
+set feed rate between 0 and 170(170 recommended) 
+set spindle speed to 11000.
 
-click Create CNC Job
+click Create CNC Job object 
 
-click on the Export button under "export G-code" 
+save the cnc code for the usb drive 
 
 
 
 \subsection{Board Cutout}
 
-File→Open Gerber for your board cutout 
-select your board cutout 
-specify a Margin. This will create a rectangular cutout at the given distance from any element in the Gerber. Specify a Gap Size. 2 times the diameter of the tool you will use for cutting is a good size. Specify how many and where you want the Gaps along the edge, 2 (top and bottom), 2 (left and right) or 4, one on each side. Click on Generate Geometry.
+File→→OpenOpen Gerber for your board cutout 
+select your board outline 
+ Under Tools select cutout tool
+specify a Margin. This will create a rectangular cutout at the given distance from any element in the Gerber. Specify a Gap Size. 2 times the diameter of the tool you will use for cutting is a good size. Specify how many and where you want the Gaps along the edge, 2 (top and bottom), 2 (left and right) or 4, one on each side.
+
+Click on Generate Geometry.
 
 Create a CNC job for the newly created geometry 
 
@@ -87,30 +88,22 @@ Create a CNC job for the newly created geometry
 
 
 \subsection{2-side PCB}
-open File→Open Gerber for both top and bottom layers of the PCB
+open File→Open→Open Gerber Select the side that has not bin used (copper top/bottom) 
 
-select Tools→Double-sided PCB tool
-select which mirror axis 
-create a mirror image of the bottom layer by clicking on Create Mirror 
+select Tools→2-sided PCB tool
+under type select gerber and the side of the pcb you are working on
+Then at reference select box and under reference object select gerber and board outline (depends on file name) and then select mirror.
 
-create the alignment hole drill object by clicking Create alignment drill in the Double-sided PCB tool 
+Select drill dia (usually 1 or 1.5mm).
+Select alignment drill coordinates by right click att the coordinate than press +aff 
+Generate excellon object.
 
-click on the Export button under "export G-code" 
+Go to Project select the gerber file that was mirrored proceed as in isolation routing 
 
-select the gerber file that has your bottom layer isolation routing 
-
-enter the tool diameter that you obtain from the calculator under isolation routing 
-
-select a feed rate between 0 and 170 mm per minute  higer feed rate implies faster routing time but rougher cuts (recommended: 170)
-set a Cut Z  average standard copper thickness is 0.05 mm but consult the laminates info
-set travel Z to 2.00 mm 
-
-click generate geometry button 
-
-select the generated geometry 
+Go to Project select the alignment hole file(name my differ) proceed as in drilling
 
 
-click on the Export button under "export G-code" 
+
 
 
 \clearpage
