@@ -12,13 +12,13 @@ include("debug.jl")
 include("utils.jl")
 include("meta.jl")
 include("math.jl")
+include("linalg.jl")
 
 # From https://github.com/ase22003/CAD
 include("basic.jl")
 include("shapes.jl")
 
 # From this directory
-include("linalg.jl")
 include("arm_visualizer.jl")
 ```
 
