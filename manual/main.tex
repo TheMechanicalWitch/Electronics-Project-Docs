@@ -115,7 +115,7 @@ Go to Project select the alignment hole file(name my differ) proceed as in drill
 \subsection{start up}
 
 load the g-code files that you wish to use onto the computer in a way that you can find them. Open Wegstr CNC controlling software if it is not already open.
-if the indicator under status does not read device ready push the black button next to the power button on the wegstr CNCMilling Machine 
+if the indicator under status does not read device ready push the button next to start on the wegstr CNCMilling Machine 
 clamp down the copper laminate to the machine bed 
 locate the  bits with corresponding dimensions  as the tools used in FlatCAM
 
@@ -123,44 +123,38 @@ locate the  bits with corresponding dimensions  as the tools used in FlatCAM
 The manufacturer recommends the use of eye protection and protective gloves while operating the machine. 
 
 \subsection{Isolation Routing}
-change the bit to the spital bit
-load the g-code for your isolation routing push the button in the software under the text auto level 
+change the bit to the spiral bit
+ press g-code to load files. pick the isolation routing file. Use the X+- y+- z+- button to get the origin then press zero all button in the software left of pause and stop.
+ press  the button in the software under auto level.
     than press the button labeled start 
 use the vacuum to remove the fiberglass recommended to use while the Routing is tacking place  
 \subsection{Drilling}
-load the g-code for the drilling
 
-change to the drill bit 
-
-if the isolation routing has bin used, use the x and y movement controls to move the spindle to x = 0 and y = 0 and than use the z axis control to move the drill bit down to the copper and set z = 0 
-    
-else push the auto level button \
-  
- than press the button labeled start
- use the vacuum to remove the fiberglass recommended to use while the drilling is tacking place  
+If you start with drilling press autolevel when the drill is touching the copper after auto lever has finished
+ press start. If you started with isolation routing Place the drill outside of the isolation routing with
+ the x,y,z buttons and drag it down to the copper make sure when it is touching the copper zero Z.
+ Then press start. Repeat for all drill files if you have multiple make sure to use the correct drill bits.
 
 
 \subsection{Board Cutout}
 this is the last operation for the PCB  
 change the bit to the Flat end milling bit 
 load the g-code for the board cutout 
-move the spindle to 0,0,0
+Take the milling bit outside of the pcb board onto the copper plate push down on the z axis until it touches the copper 
+plate 0 the z axis and start milling the outline of the board.
 press start 
  use the vacuum to remove the fiberglass recommended to use while the milling is tacking place  
 
 \subsection{2-side PCB}
 load the alignment drill  g-code
 change the bit to your drill bit 
-use the x and y movement controls to move the spindle to x = 0 and y = 0 and then use the z axis control to move the drill bit down to the copper and set z = 0 
-press the start button 
-
-declamp the laminate 
-flip the laminate to the other side 
-use the alignment holes to align the laminate 
+Take the drill to a spot outside of the pcb make sure to push down z axis to the copper plate and then 0 the z axis
+ then start drilling the allignment holes. Make sure when fliping the plate that the is pushed down in the hole and
+ has the same axis parameters as the opposite side while in the hole.
 clamp the laminate down to the work bed 
-load the bottom isolation routing g-code 
+load the isolation routing g-code fore the side not used  
 change to the spiral bit 
-move the spindle to 0,0,0 and press auto level 
+press auto level 
 press start button 
 \newpage
 
