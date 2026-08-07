@@ -102,32 +102,79 @@ arm = ArmLink(
 params = Dict([
 	shoulder_left_right  => 30,
 	shoulder_up_down     => 20,
-	elbow_up_down        => -100,
-	upper_arm_rotation   => 00,
+	elbow_up_down        => 100,
+	upper_arm_rotation   => 20,
 	lower_arm_rotation   => 60,
 
-	index_finger         => -35,
-	middle_finger        => -20,
-	ring_finger          => -10,
-	pinky_finger         => -5,
+	index_finger         => 10,
+	middle_finger        => 20,
+	ring_finger          => 30,
+	pinky_finger         => 40,
 	thumb_finger         => 30,
 
-	index_finger_length  => -7,
-	middle_finger_length => -9,
-	ring_finger_length   => -8,
-	pinky_finger_length  => -6,
-	thumb_finger_length  => -7,
+	index_finger_length  => 7,
+	middle_finger_length => 9,
+	ring_finger_length   => 8,
+	pinky_finger_length  => 6,
+	thumb_finger_length  => 7,
 
-	shoulder_offset_a    => -10,
-	shoulder_offset_b    => 30,
-	upper_arm_a          => -30,
-	upper_arm_b          => -30,
-	lower_arm_a          => -30,
-	lower_arm_b          => -30
+	shoulder_offset_a    => 10,
+	shoulder_offset_b    => 20,
+	upper_arm_a          => 30,
+	upper_arm_b          => 30,
+	lower_arm_a          => 30,
+	lower_arm_b          => 30
 ])
 
-render_arm = p->arm_cad_model(arm)(
-	p,
+joint_limits = Dict([
+	shoulder_left_right => (  0, 90 ),
+	shoulder_up_down    => (-90, 180),
+	upper_arm_rotation  => (-90, 90 ),
+	elbow_up_down       => (  0, 170),
+	lower_arm_rotation  => (-90, 90 ),
+
+	index_finger        => (0, 90),
+	middle_finger       => (0, 90),
+	ring_finger         => (0, 90),
+	pinky_finger        => (0, 90),
+	thumb_finger        => (0, 90)
+])
+
+joints = [joint for joint ∈ keys(joint_limits)]
+
+param_translation(params::Dict)::Dict = begin
+	c = deepcopy(params)
+
+	for joint ∈ (
+		shoulder_up_down,
+		elbow_up_down,
+		upper_arm_rotation,
+
+		index_finger,
+		middle_finger,
+		ring_finger,
+		pinky_finger,
+
+		index_finger_length,
+		middle_finger_length,
+		ring_finger_length,
+		pinky_finger_length,
+		thumb_finger_length,
+
+		shoulder_offset_a,
+		upper_arm_a,
+		upper_arm_b,
+		lower_arm_a,
+		lower_arm_b
+	)
+		c[joint] = -params[joint]
+	end
+
+	return c
+end
+
+render_arm = parameters->arm_cad_model(arm)(
+	parameters → param_translation,
 	[
 		x->tentacle(x, 5, 3, 1)
 		[
@@ -135,4 +182,23 @@ render_arm = p->arm_cad_model(arm)(
 			for _ in 1:10
 		]...
 	]
-) → x->write_out(union(set_rendering_parameter("fn", 10), x))
+) → x->write_out(
+	union(
+		set_rendering_parameter("fn", 10),
+		translate(
+			(
+				-parameters[shoulder_offset_b]/2,
+				-parameters[upper_arm_a]*1.5,
+				-parameters[upper_arm_a]*2,
+			) .→ Float64,
+			cube(
+				(
+					parameters[shoulder_offset_b],
+					parameters[upper_arm_a]*1.5,
+					parameters[upper_arm_a]*2
+				) .→ Float64
+			)
+		),
+		x
+	)
+)
