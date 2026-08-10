@@ -145,6 +145,6 @@ Adrian Swande - Ase22003@student.mdu.se
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* Adam Nyberg (For constructing the fan-casing (see fan_mount_v2.stl) for cooling of the camera hardware as well as early testing and contribution)
+* Adam Nyberg (For constructing the fan-casing (see camera_mount.stl and fan_mount_v2.stl) for cooling of the camera hardware as well as early testing and contribution)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
