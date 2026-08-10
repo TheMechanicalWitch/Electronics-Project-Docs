@@ -136,7 +136,7 @@ Pressing the Q button will close the software, this is recommended over using fo
 ## Contact
 
 Whilliam Borglund Head of Vision - Wbd220001@student.mdu.se  
-Adrian Swande Head of simulation - Ade22003@student.mdu.se
+Adrian Swande - Ase22003@student.mdu.se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
