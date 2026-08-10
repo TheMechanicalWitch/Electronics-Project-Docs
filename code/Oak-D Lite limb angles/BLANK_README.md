@@ -80,31 +80,29 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* python 3.12.3
   ```sh
-  npm install npm@latest -g
+  sudo apt install python3.12.3
   ```
-
+* Depth-AI v3
+  ```sh
+  git clone https://github.com/luxonis/depthai-core.git && cd depthai-core  
+  python3 -m venv venv  
+  source venv/bin/activate  
+  # Installs library and requirements
+  python3 examples/python/install_requirements.py
+  ```
+  * or via pip
+  ```
+    pip install depthai --force-reinstall
+  ```
 ### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Install prerequisites
+2. Curl the file
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+    curl -L -o camera_data_UDP_server.py "https://raw.githubusercontent.com/TheMechanicalWitch/Electronics-Project-Docs/main/code/Oak-D%20Lite%20limb%20angles/camera_data_UDP_server.py"
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
-   ```
+3. Run the python file whilst the "Oak-D lite" cammera is connected via USB3 or USB-C.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -112,11 +110,16 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+When the software is running it will show the video output of the camera as well as a dedicated depthmap. The software will track the normalised positional values of the shoulder to elbow, elbow to wrist, and 21 different landmarks positions in the hand.  
+From these 21 different landmarks, the vector for the different finger (finger vectors) will be tracked to determine whether that specific finger is curled or uncurled. The normal vector for the hand is also calculated to determine whether the hand is facing towards or away from the camera. The data is sent as JSON packages and listed as dictionary items with their associated values that are used and translated by the client into data used by the simulation software. This can be later expanded to be used as a real time controller for the LIMB.  
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
+If the software were to be unable to run or crash due to overheating of the hardware (known problem), then the recommended action is to let the software cooldown before running the command
+```
+  kill -SIGKILL $(pgrep -f camera_data_UDP_server.py)
+```
+And trying to run it again.  
+Pressing the Q button will close the software, this is recommended over using forced quitting (ctrl z, or ctrl c) since it might cause the software to bug needing to follow the previous step.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -124,12 +127,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [X] Track the arms positional data from the shoulder to elbow.
+- [X] Track the hand and finger positional data.
+- [X] Track the wrist rotational data.
+- [ ] Track the positional data facing the camera from the side.
+- [ ] Send and translate positional data to the LIMB for movement
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,9 +140,9 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what makes the LIMB project possible.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion or improvements that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
@@ -151,29 +153,12 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Top contributors:
-
-<a href="https://github.com/github_username/repo_name/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=github_username/repo_name" alt="contrib.rocks image" />
-</a>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the project_license. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Whilliam Borglund Head of Vision - Wbd220001@student.mdu.se  
+Adrian Swande Head of simulation - Ade22XXXX@student.mdu.se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,43 +167,6 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* Adam Nyberg(For constructing the fan-casing for the camera hardware as well as early testing and contribution)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
-<!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
