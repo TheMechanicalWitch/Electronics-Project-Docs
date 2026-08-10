@@ -43,7 +43,7 @@
   </p>
 </div>
 
-This program is used together with the Oak-D Lite camera to measure and visualize the angle between the lower and upper arms as well as the positonal data of the hand and fingers. The purpose is to later use this data to help control the LIMB robotic arm or simulation software in conjunction to the LIMB project.
+This program is used together with the Oak-D Lite camera to measure the angle between the lower and upper arms as well as measuring the positional data of the hand and fingers. The purpose is to later use this data to help control the LIMB robotic arm or simulation software in conjunction to the LIMB project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
