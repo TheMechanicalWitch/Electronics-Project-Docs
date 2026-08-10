@@ -82,7 +82,7 @@ arm = ArmLink(
 													LA_trans(0,0,:lower_arm_b),
 													"lower arm segment b",
 													[
-														hand
+													hand
 													]
 												)
 											]
@@ -98,35 +98,38 @@ arm = ArmLink(
 	]
 )
 
-
-params = Dict([
+joint_parameters = ArmParameters(
 	shoulder_left_right  => 30,
-	shoulder_up_down     => 20,
+	shoulder_up_down     => 50,
 	elbow_up_down        => 100,
-	upper_arm_rotation   => 20,
-	lower_arm_rotation   => 60,
+	upper_arm_rotation   => 30,
+	lower_arm_rotation   => 30,
 
 	index_finger         => 10,
 	middle_finger        => 20,
 	ring_finger          => 30,
 	pinky_finger         => 40,
-	thumb_finger         => 30,
+	thumb_finger         => 50,
+)
 
-	index_finger_length  => 7,
-	middle_finger_length => 9,
-	ring_finger_length   => 8,
-	pinky_finger_length  => 6,
-	thumb_finger_length  => 7,
-
+segment_length_parameters = ArmParameters(
 	shoulder_offset_a    => 10,
 	shoulder_offset_b    => 20,
 	upper_arm_a          => 30,
 	upper_arm_b          => 30,
 	lower_arm_a          => 30,
-	lower_arm_b          => 30
-])
+	lower_arm_b          => 30,
 
-joint_limits = Dict([
+	index_finger_length  => 7,
+	middle_finger_length => 9,
+	ring_finger_length   => 8,
+	pinky_finger_length  => 6,
+	thumb_finger_length  => 7
+)
+
+all_parameters = joint_parameters ∪ segment_length_parameters
+
+joint_limits = Dict(
 	shoulder_left_right => (  0, 90 ),
 	shoulder_up_down    => (-90, 180),
 	upper_arm_rotation  => (-90, 90 ),
@@ -138,36 +141,38 @@ joint_limits = Dict([
 	ring_finger         => (0, 90),
 	pinky_finger        => (0, 90),
 	thumb_finger        => (0, 90)
-])
+)
 
 joints = [joint for joint ∈ keys(joint_limits)]
 
-param_translation(params::Dict)::Dict = begin
+param_translation(params::ArmParameters)::ArmParameters = begin
 	c = deepcopy(params)
 
-	for joint ∈ (
-		shoulder_up_down,
-		elbow_up_down,
-		upper_arm_rotation,
+	for param ∈ params
+		if param ∈ (
+			shoulder_up_down,
+			elbow_up_down,
+			upper_arm_rotation,
 
-		index_finger,
-		middle_finger,
-		ring_finger,
-		pinky_finger,
+			index_finger,
+			middle_finger,
+			ring_finger,
+			pinky_finger,
 
-		index_finger_length,
-		middle_finger_length,
-		ring_finger_length,
-		pinky_finger_length,
-		thumb_finger_length,
+			index_finger_length,
+			middle_finger_length,
+			ring_finger_length,
+			pinky_finger_length,
+			thumb_finger_length,
 
-		shoulder_offset_a,
-		upper_arm_a,
-		upper_arm_b,
-		lower_arm_a,
-		lower_arm_b
-	)
-		c[joint] = -params[joint]
+			shoulder_offset_a,
+			upper_arm_a,
+			upper_arm_b,
+			lower_arm_a,
+			lower_arm_b
+		)
+			c[param] = -params[param]
+		end
 	end
 
 	return c
