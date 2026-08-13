@@ -82,7 +82,7 @@ arm = ArmLink(
 													LA_trans(0,0,:lower_arm_b),
 													"lower arm segment b",
 													[
-													hand
+														hand
 													]
 												)
 											]
@@ -148,8 +148,9 @@ joints = [joint for joint ∈ keys(joint_limits)]
 param_translation(params::ArmParameters)::ArmParameters = begin
 	c = deepcopy(params)
 
-	for param ∈ params
-		if param ∈ (
+	for param ∈ keys(params)
+		println(param)
+		if param ∈ Set((
 			shoulder_up_down,
 			elbow_up_down,
 			upper_arm_rotation,
@@ -170,7 +171,7 @@ param_translation(params::ArmParameters)::ArmParameters = begin
 			upper_arm_b,
 			lower_arm_a,
 			lower_arm_b
-		)
+		))
 			c[param] = -params[param]
 		end
 	end
