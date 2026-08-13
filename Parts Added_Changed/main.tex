@@ -246,7 +246,7 @@ The vision system is a real-time human tracking system that uses an OAK-D camera
 For each detected body joint, the program takes its 2D pixel position (u, v) and combines it with the depth value Z from the stereo camera. Using the camera's focal lengths and optical center, it calculates the 3D position with the formulas X = (u - cx)Z / fx and Y = (v - cy)Z / fy. This gives the position of the shoulder, elbow, and wrist in meters relative to the camera.  The code also uses vector mathematics to calculate joint angles. 
 
 \subsection{Hand position from Vision}
-For an arm, it creates two vectors from the elbow to the shoulder and from the elbow to the wrist. The angle between these vectors is calculated using the dot product formula cos(θ) = (a · b) / (|a||b|). The same principle is used for the fingers to determine whether they are open or closed. If the calculated angle is below a certain threshold, the finger is considered closed, otherwise it is considered open.  
+For the arm, it creates two vectors from the elbow to the shoulder and from the elbow to the wrist. The angle between these vectors is calculated using the dot product formula cos(θ) = (a · b) / (|a||b|). The same principle is used for the fingers to determine whether they are open or closed. If the calculated angle is below a certain threshold, the finger is considered closed, otherwise it is considered open.  
 
 For hand orientation, the code uses the cross product of two vectors formed between the wrist, index finger, and pinky. The resulting vector represents the normal direction of the palm. By looking at the Z-component of this normal vector, the program estimates whether the palm is facing towards or away from the camera.
 
