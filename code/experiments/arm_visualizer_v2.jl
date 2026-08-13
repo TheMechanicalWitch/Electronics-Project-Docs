@@ -42,13 +42,13 @@ end
 	return arm_chains(link, [String[]])
 end
 
-@logged function get_coordinate(trans_mat::Matrix{Num}, parameters::ArmParameters)
+@logged function get_coordinate(trans_mat::Matrix{Num}, parameters::ArmParameters)::Vector{Float64}
 	return (substitute(trans_mat, parameters)*[0,0,0,1])[1:3]
 end
 
 @logged function arm_cad_model(link::ArmLink, trans_mats::Dict{String, Matrix{Num}}, chains::Vector{Vector{String}})::Function
 	@ignore link
-	return (parameters::Dict{Num, Float64}, tentacle_funs::Vector{<:Function})->union(
+	return (parameters::ArmParameters, tentacle_funs::Vector{<:Function})->union(
 		[
 			tentacle_funs[i](
 				[
