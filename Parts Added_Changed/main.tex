@@ -2,6 +2,36 @@
 \usepackage{graphicx} % This lets you include figures
 \usepackage{subcaption} % This lets you include sib figures
 
+
+\usepackage{listings} % This lets you add code snipets
+\usepackage{xcolor} % This lets you change colours of text
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C
+}
+
+
 \begin{document}
 
 This document will note and explain the changes done to the LIMB project during the summer of 2026
@@ -18,6 +48,7 @@ The original worm broke.
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Worm_Broke.jpg}
     \end{subfigure}
+    \caption{Original broken worm gear}
 \end{figure}
 
 A new worm was printed out of carbonfibre. It also broke along with the motor driving it.
@@ -29,6 +60,7 @@ A new worm was printed out of carbonfibre. It also broke along with the motor dr
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Burnt_Motor.jpg}
     \end{subfigure}
+    \caption{The second iteration broken wormgear \& Broken motor}
 \end{figure}
 
 The reason for both these failures were the length of screws connecting the potentiometer being too long and digging into the worm gear.
@@ -40,10 +72,10 @@ The reason for both these failures were the length of screws connecting the pote
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Worm_Gear_Broken.jpg}
     \end{subfigure}
+    \caption{Potentiometer screws \& Wormgear wear}
 \end{figure}
 
 This caused enough friction to require the motor to work incredibly hard until the breaking of the part gave the motor a back current strong enough to fry the MOSFETs.
-
 
 The screws were exchanged for shorter ones, the gear, worm and casing were printed anew.
 
@@ -53,24 +85,181 @@ Underneath the outercasing of the bicep there is a step down circuit which was n
 
 The new plate is thickened to enable a dugout for this part while still fitting the surounding parts. 
 
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Outer_Bicep_Off.jpg}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Outer_Bicep_On.jpg}
+    \end{subfigure}
+    \caption{The loose bicep plate \& the installed bicep plate with the dugout visible}
+\end{figure}
+
 The skeletal board underneath ought to be extended to match this new hight to cover the dugout from view.
 
 \subsection{Inner Bicep}
 
 Simply made to match the outer Bicep for aesthetic reasons.
 
+\subsection{Upper arm IMU unit}
+
+The inner side of the front bicep was redesigned to have a slot for an IMU circuit 
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Upper_Arm_IMU_Outside.jpg}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Upper_Arm_IMU_Inside.jpg}
+    \end{subfigure}
+    \caption{The Upper bicep outside \& inside}
+\end{figure}
+
 \subsection{Finger Nylon Thread}
 
 The nylon thread connecting the ring finger was replaced. The underlying sharp edges were not addressed. 
 
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Nylon_Thread_Upper.jpg}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Nylon_Thread_Finger.jpg}
+    \end{subfigure}
+    \caption{The motors controlling the nylon threads \& the repaired nylon thread in the ring finger}
+\end{figure}
+
+\subsection{Arm hook attatchment}
+
+Due to the difficulty of working on the arm without having several other people lift certain parts a hook module was printed
+to the dimensions of the outer bicep plate to hold the arm in an upright posture while working on it. 
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Arm_hook_attatchment.jpg}
+    \end{subfigure}
+    \caption{The hook module attatched to the outer biceps \& triceps}
+\end{figure}
+
+\subsection{Shoulder Bearings}
+
+The lower part of the shoulder's pivot gearbox had plastic on plastic friction whenever the arm reached a high enough Left-Right angle. 
+The previous solution was to include grease to recude the friction but over time it dried and was displaced. 
+
+A new lower gearbox was embedded with a magazine of ballbearings to lift these parts away from eachother and decrease friction.
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Shoulder_Beaerings.jpg}
+    \end{subfigure}
+    \caption{The inner view of the shoulder gearbox connecting the shoulder showing the new ballbearings}
+\end{figure}
+
+\subsection{Camera mount and cooling}
+
+Adam f�r v�lla skriva n�got snyggt h�r
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
 \section{Electrical}
 
-\subsection{Powerline Quick Disconnect}
+\subsection{Cable Quick Disconnect}
 
-\subsection{Shoulder Rotation Quick Disconnect}
+Both the power lines going through the shoulder and the arm rotation potentiometer were soldered or crimped in both ends rendering 
+removal of the arm impossible. These cables were cut and connectors were added to quickly detatch and reattatch them.
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+    \end{subfigure}
+    \caption{}
+\end{figure}
 
 \subsection{Upper Arm IMU Cable Connector}
 
+The IMU cable was replaced due to the ground wire being being broken.
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Upper_IMU_Cable_Broke.jpg}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Upper_IMU_Cable_Fixed.jpg}
+    \end{subfigure}
+    \caption{The broken IMU cable \& the spliced new connector}
+\end{figure}
+
+\subsection{Motor potentiometer bypass}
+A new motor was opened up and had its potentiometer in charge of knowing its rotation was replaced with two equal resistors. 
+This ended up tricking the motor to always be able to move in either direction without stop.
+
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
 \section{Software}
+
+\subsection{Local logging off IMU data on Chest ESP32}
+
+The IMU was implemented to only send its data upwards to the ORIN while making local debugging harder. 
+A simple logging script was copied from other locations
+
+\begin{lstlisting}[style=CStyle]
+
+    ESP_LOGI(TAG,
+                "X: %.2f, Y: %.2f, Z: %.2f, "
+                "dot: %.2f, "
+                "cross: (%.2f,%.2f,%.2f), "
+                "azumith: %.2f, elevation: %.2f",
+                x,y,z,
+                dot,
+                cross[0],cross[1],cross[2],
+                az,el);
+
+\end{lstlisting}
+
+\subsection{Nonlinearisation of the potentiometer}
+
+The behaviour between the potentiometer derived angle and the measured external angle was non linear. 
+Several different solutions were tried amongst them: changing the "ContinuousServoConfig" variable in robot\_shoulder\_module.c by trail and error \&
+writing non linear version of "LIMB\_LERP\_FROM\_RANGE" function in limb\_utils.h. Neither of these gave satesfactory results.
+
+A remaining avenue is the behaviour of the potentiometer themselves. While unmounted the potentiometer stops while at its max \& min values. though while mounted the arm is able to rotate it more than its designated 285 degrees. 
+
+\subsection{Arm position from Vision}
+
+Whilliam f�r v�lla skriva n�got snyggt h�r
+
+\subsection{Hand position from Vision}
+
+Whilliam f�r v�lla skriva n�got snyggt h�r
+
+\section{Theory}
+
+\subsection{Invalability of extracting angles from the IMU}
+
+Cornelia f�r v�lla skriva n�got snyggt h�r
+
+\subsection{ROS2 Pre-study}
+
+Adam f�r v�lla skriva n�got snyggt h�r
+
+\subsection{PCB-mill manual}
+
+Samuel/Filip f�r v�lla skriva n�got snyggt h�r
 
 \end{document}
