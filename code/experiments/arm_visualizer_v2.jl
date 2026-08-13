@@ -105,18 +105,21 @@ end
 @logged function find_targets(
 	targets::Dict{String, <:RVect},
 	trans_mats::Dict{String, Matrix{Num}},
-	fixed_parameters::Dict{Num, <:Real},
-	dynamic_parameters::Dict{Num, Float64},
+	fixed_parameters::ArmParameters,
+	dynamic_parameters::ArmParameters,
 	joint_constraints_error_vector_function::Union{Nothing, Function}=nothing,
 	time_limit::Float64=0.1
 )::Dict{Num, <:Real}
-	err_vect = params->[
+	@ignore trans_mats
+
+	err_vect = params->[ ##MUST MAKE PARAMS INTO ARMPARAMETERS (FROM VECTOR)
 		[
 			(get_coordinate(trans_mats[target], params ∪ fixed_parameters) - targets[target]) .→ Float64
 			for target ∈ keys(targets)
 		]...,
 		(joint_constraints_error_vector_function == nothing ? [] : joint_constraints_error_vector_function(params))...
 	]
+	@log err_vect
 
 	return levenberg_marquardt(
 		err_vect,
