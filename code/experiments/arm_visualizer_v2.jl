@@ -43,6 +43,7 @@ end
 end
 
 @logged function get_coordinate(trans_mat::Matrix{Num}, parameters::ArmParameters)::Vector{Float64}
+	@ignore trans_mat
 	return (substitute(trans_mat, parameters)*[0,0,0,1])[1:3]
 end
 
@@ -66,14 +67,14 @@ end
 	return arm_cad_model(arm, Dict(global_trans_mats(arm)), arm_chains(arm))
 end
 
-@logged function dict_to_vect(dict::Dict{Num, <:Real})::Vector{Float64}
+@logged function dict_to_vect(dict::OrderedDict{Num, <:Real})::Vector{Float64}
 	return [
 		dict[key] → Float64
 		for key ∈ keys(dict)
 	]
 end
 
-@logged function vect_to_dict(dict::Dict{Num, <:Real}, vect::Vector{Float64})::Dict{String, <:Real}
+@logged function vect_to_dict(dict::OrderedDict{Num, Float64}, vect::Vector{Float64})::OrderedDict{Num, Float64}
 	return Dict([
 		key => vect[i]
 		for (i, key) ∈ enumerate(keys(dict))
@@ -81,8 +82,8 @@ end
 end
 
 @logged function joint_constraints_error_vector(
-	joints::Dict{Num, <:Real},
-	joint_limits::Dict{Num, Tuple{<:Real, <:Real}},
+	joints::ArmParameters,
+	joint_limits::OrderedDict{Num, <:Tuple{<:Real, <:Real}},
 	margin::Real=2,
 	cost_factor::Real=100,
 	cost_exponent::Int64=2
@@ -92,10 +93,12 @@ end
 	err_vect::Vector{Float64} = []
 
 	for joint ∈ keys(joints)
-		if joint_limits[joint][1] + margin >= normalize_deg(joints[key])
-			push!(err_vect, cost_factor*(joint_limits[joint][1] - normalize_deg(joints[joint]))^cost_exponent)
+		if joint_limits[joint][1] + margin >= normalize_deg(joints[joint])
+			push!(err_vect, cost_factor*((joint_limits[joint][1] + margin) - normalize_deg(joints[joint]))^cost_exponent)
 		elseif normalize_deg(joints[joint]) + margin >= joint_limits[joint][2]
-			push!(err_vect, cost_factor*(normalize_deg(joints[joint]) - joint_limits[joint][2])^cost_exponent)
+			push!(err_vect, cost_factor*((normalize_deg(joints[joint]) + margin) - joint_limits[joint][2])^cost_exponent)
+		else
+			push!(err_vect, 0)
 		end
 	end
 
@@ -109,17 +112,20 @@ end
 	dynamic_parameters::ArmParameters,
 	joint_constraints_error_vector_function::Union{Nothing, Function}=nothing,
 	time_limit::Float64=0.1
-)::Dict{Num, <:Real}
+)::ArmParameters
 	@ignore trans_mats
 
-	err_vect = params->[ ##MUST MAKE PARAMS INTO ARMPARAMETERS (FROM VECTOR)
+	err_vect = p_vect->begin
+		params = vect_to_dict(dynamic_parameters, p_vect)
 		[
-			(get_coordinate(trans_mats[target], params ∪ fixed_parameters) - targets[target]) .→ Float64
-			for target ∈ keys(targets)
-		]...,
-		(joint_constraints_error_vector_function == nothing ? [] : joint_constraints_error_vector_function(params))...
-	]
-	@log err_vect
+			([
+				(get_coordinate(trans_mats[target], params ∪ fixed_parameters) - targets[target]) .→ Float64
+				for target ∈ keys(targets)
+			] → x->reduce(vcat, x))...,
+			(joint_constraints_error_vector_function == nothing ? [] : joint_constraints_error_vector_function(params))...
+		]
+	end
+	@log err_vect(dict_to_vect(dynamic_parameters))
 
 	return levenberg_marquardt(
 		err_vect,
