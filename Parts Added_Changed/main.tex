@@ -1,7 +1,8 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage{graphicx} % This lets you include figures
+\usepackage[bottom=15mm]{geometry}
 \usepackage{subcaption} % This lets you include sib figures
-
+\usepackage{float} % Forces pictures to adhead to its location
 
 \usepackage{listings} % This lets you add code snipets
 \usepackage{xcolor} % This lets you change colours of text
@@ -41,7 +42,7 @@ This document will note and explain the changes done to the LIMB project during 
 \subsection{Shoulder Up-Down Worm \& Worm gear}
 
 The original worm broke. 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Worm_Bent.jpg}
     \end{subfigure}
@@ -53,7 +54,7 @@ The original worm broke.
 
 A new worm was printed out of carbonfibre. It also broke along with the motor driving it.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Carbon_Worm_Broke.jpg}
     \end{subfigure}
@@ -65,7 +66,7 @@ A new worm was printed out of carbonfibre. It also broke along with the motor dr
 
 The reason for both these failures were the length of screws connecting the potentiometer being too long and digging into the worm gear.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Potentiometer_Screws.jpg}
     \end{subfigure}
@@ -85,7 +86,7 @@ Underneath the outercasing of the bicep there is a step down circuit which was n
 
 The new plate is thickened to enable a dugout for this part while still fitting the surounding parts. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Outer_Bicep_Off.jpg}
     \end{subfigure}
@@ -105,7 +106,7 @@ Simply made to match the outer Bicep for aesthetic reasons.
 
 The inner side of the front bicep was redesigned to have a slot for an IMU circuit 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Upper_Arm_IMU_Outside.jpg}
     \end{subfigure}
@@ -119,7 +120,7 @@ The inner side of the front bicep was redesigned to have a slot for an IMU circu
 
 The nylon thread connecting the ring finger was replaced. The underlying sharp edges were not addressed. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Nylon_Thread_Upper.jpg}
     \end{subfigure}
@@ -134,7 +135,7 @@ The nylon thread connecting the ring finger was replaced. The underlying sharp e
 Due to the difficulty of working on the arm without having several other people lift certain parts a hook module was printed
 to the dimensions of the outer bicep plate to hold the arm in an upright posture while working on it. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Arm_hook_attatchment.jpg}
     \end{subfigure}
@@ -148,7 +149,7 @@ The previous solution was to include grease to recude the friction but over time
 
 A new lower gearbox was embedded with a magazine of ballbearings to lift these parts away from eachother and decrease friction.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Shoulder_Beaerings.jpg}
     \end{subfigure}
@@ -159,12 +160,12 @@ A new lower gearbox was embedded with a magazine of ballbearings to lift these p
 
 Adam f�r v�lla skriva n�got snyggt h�r
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
-        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+        \includegraphics[width=.8\linewidth]{Media/Camera_Mount_Front.jpg}
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
-        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+        \includegraphics[width=.8\linewidth]{Media/Camera_Mount_Back.jpg}
     \end{subfigure}
     \caption{}
 \end{figure}
@@ -176,7 +177,7 @@ Adam f�r v�lla skriva n�got snyggt h�r
 Both the power lines going through the shoulder and the arm rotation potentiometer were soldered or crimped in both ends rendering 
 removal of the arm impossible. These cables were cut and connectors were added to quickly detatch and reattatch them.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
     \end{subfigure}
@@ -190,7 +191,7 @@ removal of the arm impossible. These cables were cut and connectors were added t
 
 The IMU cable was replaced due to the ground wire being being broken.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
         \includegraphics[width=.8\linewidth]{Media/Upper_IMU_Cable_Broke.jpg}
     \end{subfigure}
@@ -204,9 +205,9 @@ The IMU cable was replaced due to the ground wire being being broken.
 A new motor was opened up and had its potentiometer in charge of knowing its rotation was replaced with two equal resistors. 
 This ended up tricking the motor to always be able to move in either direction without stop.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
-        \includegraphics[width=.8\linewidth]{Media/Placeholder.png}
+        \includegraphics[width=.8\linewidth]{Media/Fixed_Motor.jpg}
     \end{subfigure}
     \caption{}
 \end{figure}
