@@ -256,7 +256,12 @@ For hand orientation, the code uses the cross product of two vectors formed betw
 
 \subsection{Invalability of extracting angles from the IMU}
 
-Cornelia f�r v�lla skriva n�got snyggt h�r
+Any angle measurment that can be extracted from the IMU will be realative to its own frame of reference, it only measures decomposition
+of the gravitational vector on its own frame of reference\footnote{testing}. For the LIMB this caused an issue for two reasons.
+First the IMU frame of reference cannot be constrained to be orthogonally paralell to the frame of reference assigned to the LIMB. Secondly the LIMB lacks inherent
+azimuth motion. Since the IMU can only reliable measure rotation in one of its own planes, this breaks in the LIMB since it couldnt be placed in the bicep with one 
+of its axis paralell to the gravitational vector. Because of this any elevation of the arm would have to be calculated by full 3-dimension translation, which is mathematically
+impossible with only an IMU. The information density is insufficient.
 
 \subsection{ROS2 Pre-study}
 
