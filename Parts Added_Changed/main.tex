@@ -157,7 +157,7 @@ A new lower gearbox was embedded with a magazine of ballbearings to lift these p
 
 \subsection{Camera mount and cooling}
 
-Adam f�r v�lla skriva n�got snyggt h�r
+%Adam f�r v�lla skriva n�got snyggt h�r
 
 \begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
@@ -246,7 +246,9 @@ The vision system is a real-time human tracking system that uses an OAK-D camera
 For each detected body joint, the program takes its 2D pixel position (u, v) and combines it with the depth value Z from the stereo camera. Using the camera's focal lengths and optical center, it calculates the 3D position with the formulas X = (u - cx)Z / fx and Y = (v - cy)Z / fy. This gives the position of the shoulder, elbow, and wrist in meters relative to the camera.  The code also uses vector mathematics to calculate joint angles. 
 
 \subsection{Hand position from Vision}
-For the arm, it creates two vectors from the elbow to the shoulder and from the elbow to the wrist. The angle between these vectors is calculated using the dot product formula cos(θ) = (a · b) / (|a||b|). The same principle is used for the fingers to determine whether they are open or closed. If the calculated angle is below a certain threshold, the finger is considered closed, otherwise it is considered open.  
+For the arm, it creates two vectors from the elbow to the shoulder and from the elbow to the wrist. The angle between these vectors is calculated using the dot product formula \begin{math}
+    \cos(\theta) = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}||\vec{b}|}%\cos(\Theta) = (a · b) / (|a||b|)
+\end{math}. The same principle is used for the fingers to determine whether they are open or closed. If the calculated angle is below a certain threshold, the finger is considered closed, otherwise it is considered open.  
 
 For hand orientation, the code uses the cross product of two vectors formed between the wrist, index finger, and pinky. The resulting vector represents the normal direction of the palm. By looking at the Z-component of this normal vector, the program estimates whether the palm is facing towards or away from the camera.
 
@@ -255,14 +257,25 @@ For hand orientation, the code uses the cross product of two vectors formed betw
 
 \subsection{Invalability of extracting angles from the IMU}
 
-Cornelia f�r v�lla skriva n�got snyggt h�r
+Any angle measurment that can be extracted from the IMU will be realative to its own frame of reference, it only measures decomposition
+of the gravitational vector on its own frame of reference\footnote{
+    The datasheet states 6 degrees of freedom which is a half truth, it can not measure lateral movements. it gives a gyro
+    reading that is achieved through onboard integration of the instantaneous change of the accelerometer (decomposed gravity) readings.
+}. For the LIMB this caused an issue for two reasons.
+First the IMU frame of reference cannot be constrained to be orthogonally paralell to the frame of reference assigned to the LIMB. Secondly the LIMB lacks inherent
+azimuth motion. Since the IMU can only reliable measure rotation in one of its own planes, this breaks in the LIMB since it could not be placed in the bicep with one 
+of its axis paralell to the gravitational vector. Because of this any elevation of the arm would have to be calculated by full 3-dimension translation, which is mathematically
+impossible with only an IMU. The information density is insufficient. Secondly standard assumptions when calculating azimuth and elevation is an elevation angle out from the gravitational vector
+and a rotation around the gravitational vector. This does not hold for the LIMB however, since both azimuth and elevation of the arm is caused
+by the two shoulder joints. they both angle out from the gravitational vector but orthogonal to eachother. This means that the IMU cant tell if a roation is caused by an up-down or a left-right movement,
+nor can it tell if a change is an azimuth change caused by dual shoulder joint; or an elivation change caused by a single shoulder joint movement.
 
 \subsection{ROS2 Pre-study}
 
-Adam f�r v�lla skriva n�got snyggt h�r
+%Adam f�r v�lla skriva n�got snyggt h�r
 
 \subsection{PCB-mill manual}
 
-Samuel/Filip f�r v�lla skriva n�got snyggt h�r
+%Samuel/Filip f�r v�lla skriva n�got snyggt h�r
 
 \end{document}

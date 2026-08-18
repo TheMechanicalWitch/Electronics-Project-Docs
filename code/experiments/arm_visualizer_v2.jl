@@ -1,138 +1,72 @@
-@START_OF_DEBUG_CATEGORY "kinematics"
+trans_mats = global_trans_mats(arm) → Dict
 
-using DataStructures
+fixed_parameters = ArmParameters([
+	shoulder_offset_a    => 10,
+	shoulder_offset_b    => 20,
+	upper_arm_a          => 30,
+	upper_arm_b          => 30,
+	lower_arm_a          => 30,
+	lower_arm_b          => 30,
 
-struct ArmLink
-	trans_mat::Matrix{Num}
-	name::Union{String}
-	children::Vector{ArmLink}
-end
+	index_finger_length  => 7,
+	middle_finger_length => 9,
+	ring_finger_length   => 8,
+	pinky_finger_length  => 6,
+	thumb_finger_length  => 7,
 
-ArmParameters = OrderedDict{Num, Float64}
+	lower_arm_rotation   => 30,
 
-Base.:*(a::ArmLink, b::ArmLink)::ArmLink = ArmLink(a.trans_mat * b.trans_mat, b.name, b.children)
+	index_finger         => 10,
+	middle_finger        => 20,
+	ring_finger          => 30,
+	pinky_finger         => 40,
+	thumb_finger         => 50
+])
 
-Base.:∪(A::ArmParameters, B::ArmParameters)::ArmParameters = ArmParameters(collect(A) ∪ collect(B))
+dynamic_parameters = ArmParameters([
+	shoulder_left_right  => 30,
+	shoulder_up_down     => 50,
+	elbow_up_down        => 100,
+	upper_arm_rotation   => 30,
+])
 
-@logged function global_trans_mats(link::ArmLink)::Vector{Pair{String, Matrix{Num}}}
-	children::Vector{Pair{String, Matrix{Num}}} = []
-	if !isempty(link.children)
-		children = ∪([global_trans_mats(link * l) for l ∈ link.children]...)
-	end
-	return [link.name => link.trans_mat] ∪ children
-end
+#={{{=#@logged function visualize_arm(
+	visual_data::Dict,
+	cam_to_rob_coords_map::Function,
+	time_limit::Real,
+	side::Char='L'
+)
 
-@logged function arm_chains(link::ArmLink, chains::Vector{Vector{String}})::Any
-	push!(chains[end], link.name)
-	@log chains
-	if (link.children → length) == 1
-		return arm_chains(link.children[1], chains)
-	end
-	if (link.children → length) > 1
-		for child ∈ link.children
-			push!(chains, [link.name])
-			arm_chains(child, chains)
-		end
-	end
-	return chains
-end
+	@ignore visual_data
 
-@logged function arm_chains(link::ArmLink)::Vector{Vector{String}}
-	@ignore link
-	return arm_chains(link, [String[]])
-end
+	targets = Dict(
+		"upper arm segment b" => cam_to_rob_coords_map(visual_data["arms"]["$(side)_elbow"] .→ Float64),
+		"lower arm segment b" => cam_to_rob_coords_map(visual_data["arms"]["$(side)_wrist"] .→ Float64)
+	)
 
-@logged function get_coordinate(trans_mat::Matrix{Num}, parameters::ArmParameters)::Vector{Float64}
-	@ignore trans_mat
-	return (substitute(trans_mat, parameters)*[0,0,0,1])[1:3]
-end
+	@log targets
 
-@logged function arm_cad_model(link::ArmLink, trans_mats::Dict{String, Matrix{Num}}, chains::Vector{Vector{String}})::Function
-	@ignore link
-	return (parameters::ArmParameters, tentacle_funs::Vector{<:Function})->union(
-		[
-			tentacle_funs[i](
-				[
-					get_coordinate(trans_mats[node], parameters)
-					for node ∈ chains[i]
-				]
-			)
-			for i ∈ 1:length(chains)
-		]...
-	)::String
-end
+	#fixed_parameters[lower_arm_rotation] = ...
+	global fixed_parameters[index_finger] = visual_data["hands"][string(side=='L' ? 0 : 1)]["indexfinger"] == "open" ? 2.0 : 70.0
+	global fixed_parameters[middle_finger] = visual_data["hands"][string(side=='L' ? 0 : 1)]["middlefinger"] == "open" ? 2.0 : 70.0
+	global fixed_parameters[ring_finger] = visual_data["hands"][string(side=='L' ? 0 : 1)]["ringfinger"] == "open" ? 2.0 : 70.0
+	global fixed_parameters[pinky_finger] = visual_data["hands"][string(side=='L' ? 0 : 1)]["pinkyfinger"] == "open" ? 2.0 : 70.0
+	global fixed_parameters[thumb_finger] = visual_data["hands"][string(side=='L' ? 0 : 1)]["thumb"] == "open" ? 2.0 : 70.0
 
-@logged function arm_cad_model(arm::ArmLink)::Function
-	@ignore arm
-	return arm_cad_model(arm, Dict(global_trans_mats(arm)), arm_chains(arm))
-end
+	@log fixed_parameters
 
-@logged function dict_to_vect(dict::OrderedDict{Num, <:Real})::Vector{Float64}
-	return [
-		dict[key] → Float64
-		for key ∈ keys(dict)
-	]
-end
-
-@logged function vect_to_dict(dict::OrderedDict{Num, Float64}, vect::Vector{Float64})::OrderedDict{Num, Float64}
-	return Dict([
-		key => vect[i]
-		for (i, key) ∈ enumerate(keys(dict))
-	])
-end
-
-@logged function joint_constraints_error_vector(
-	joints::ArmParameters,
-	joint_limits::OrderedDict{Num, <:Tuple{<:Real, <:Real}},
-	margin::Real=2,
-	cost_factor::Real=100,
-	cost_exponent::Int64=2
-)::Vector{Float64}
-	normalize_deg(d) = d > 180 ? d - 360 : d
-
-	err_vect::Vector{Float64} = []
-
-	for joint ∈ keys(joints)
-		if joint_limits[joint][1] + margin >= normalize_deg(joints[joint])
-			push!(err_vect, cost_factor*((joint_limits[joint][1] + margin) - normalize_deg(joints[joint]))^cost_exponent)
-		elseif normalize_deg(joints[joint]) + margin >= joint_limits[joint][2]
-			push!(err_vect, cost_factor*((normalize_deg(joints[joint]) + margin) - joint_limits[joint][2])^cost_exponent)
-		else
-			push!(err_vect, 0)
-		end
-	end
-
-	return err_vect
-end
-
-@logged function find_targets(
-	targets::Dict{String, <:RVect},
-	trans_mats::Dict{String, Matrix{Num}},
-	fixed_parameters::ArmParameters,
-	dynamic_parameters::ArmParameters,
-	joint_constraints_error_vector_function::Union{Nothing, Function}=nothing,
-	time_limit::Float64=0.1
-)::ArmParameters
-	@ignore trans_mats
-
-	err_vect = p_vect->begin
-		params = vect_to_dict(dynamic_parameters, p_vect)
-		[
-			([
-				(get_coordinate(trans_mats[target], params ∪ fixed_parameters) - targets[target]) .→ Float64
-				for target ∈ keys(targets)
-			] → x->reduce(vcat, x))...,
-			(joint_constraints_error_vector_function == nothing ? [] : joint_constraints_error_vector_function(params))...
-		]
-	end
-	@log err_vect(dict_to_vect(dynamic_parameters))
-
-	return levenberg_marquardt(
-		err_vect,
+	global dynamic_parameters = find_targets(
+		targets,
+		trans_mats,
+		fixed_parameters,
 		dynamic_parameters,
-		0.0,
+		x->joint_constraints_error_vector(x, joint_limits),
+		param_translation,
 		time_limit
 	)
-end
 
-@END_OF_DEBUG_CATEGORY
+	@log dynamic_parameters
+
+	render_arm(dynamic_parameters ∪ fixed_parameters, targets)
+
+end#}}}
