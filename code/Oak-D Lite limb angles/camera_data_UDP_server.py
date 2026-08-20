@@ -139,7 +139,7 @@ def main():
     hand_landmarker = vision.HandLandmarker.create_from_options(vision.HandLandmarkerOptions(
         base_options=mp_python.BaseOptions(model_asset_path=get_hand_model()),
         running_mode=vision.RunningMode.VIDEO,
-        num_hands=2,
+        num_hands=1,
         min_hand_detection_confidence = 0.5,
         min_tracking_confidence = 0.5,
     ))
@@ -264,10 +264,12 @@ def main():
                         print("Number")
                         print(normal[2])
                         if normal[2] < -0.25:
-                            report["hands"][hand_idx]["rotation"] = "facing"
+                            report["hands"][hand_idx]["rotation"] = "Front"
                         elif normal[2] > 0.25:
-                            report["hands"][hand_idx]["rotation"] = "unfacing or whatever"
-
+                            report["hands"][hand_idx]["rotation"] = "Back"
+                        else:
+                            report["hands"][hand_idx]["rotation"] = "Neutral"
+                        
                         cv2.putText(
                             frame,
                             report["hands"][hand_idx]["rotation"],
@@ -289,10 +291,10 @@ def main():
                             hand_identifier /= reference
 
                             thumb_angle = joint_angle(points_space[0], points_space[2], points_space[4])
-                            index_angle = joint_angle(points_space[0], points_space[6], points_space[7])
-                            middle_angle = joint_angle(points_space[0], points_space[10], points_space[11])
+                            index_angle = joint_angle(points_space[0], points_space[6], points_space[8])
+                            middle_angle = joint_angle(points_space[0], points_space[10], points_space[12])
                             ring_angle = joint_angle(points_space[0], points_space[13], points_space[16])
-                            pinky_angle = joint_angle(points_space[0], points_space[18], points_space[19])
+                            pinky_angle = joint_angle(points_space[0], points_space[18], points_space[20])
                             hand_angletowrist = joint_angle(points_space[0], points_space[9], points_space[5])
 
                             print(thumb_angle)
